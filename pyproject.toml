@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "article-fine-tuning"
+version = "0.1.0"
+description = ""
+authors = ["Andre du Plessis <andredp@aleios.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.31.0"
+bs4 = "^0.0.1"
+python-dotenv = "1.0.0"
+chromadb = "^0.4.22"
+supabase = "^2.3.3"
+pydantic-settings = "^2.1.0"
+selenium = "^4.17.2"
+pdfminer-six = "^20231228"
+boto3 = "^1.34.33"
+beautifulsoup4 = "^4.12.3"
+langchain-openai = "^0.0.8"
+markdown = "^3.5.2"
+pymupdf = "^1.23.26"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

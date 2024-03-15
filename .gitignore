@@ -1,0 +1,10 @@
+.env
+**/__pycache__/
+.python-version
+**/.DS_Store
+**/*.token
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
