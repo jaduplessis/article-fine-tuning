@@ -1,0 +1,114 @@
+
+# Serverless queues and workers — Designing Lift
+
+This article is part of a series on Lift, an open-source project that simplifies deploying serverless applications.
+
+As introduced in previous articles, Lift is a Serverless Framework plugin that simplifies deploying serverless applications.
+
+As we approach the first beta planned for May, let’s talk about queues and workers:
+- How to deploy production-ready queues and workers on AWS today.
+- How we plan to simplify that with Lift.
+
+## The naive approach
+
+When going serverless, SQS + AWS Lambda is an iconic duo:
+- SQS is a queue service that is entirely managed by AWS, scales automatically, and bills by the usage.
+- AWS Lambda runs our code and is entirely managed by AWS, scales automatically, and bills by the usage.
+
+The best part: Lambda integrates with SQS natively. We can write “queue workers” on Lambda without having to poll messages from SQS: instead, our code (the worker) is automatically invoked when a new message (aka job) is pushed into SQS.
+
+To deploy queues and workers with the Serverless Framework, we need a bit of CloudFormation:
+
+```yaml
+# Example configuration here
+```
+
+### Problems with the naive approach
+
+The biggest missing piece here is error handling.
+
+By default, SQS retries failed jobs indefinitely. Imagine your code has a bug (let’s pretend that can happen): the job will be retried over and over for days, possibly costing a lot of money and wasting resources.
+
+To deal with errors, we need to set up a “dead letter queue” (a queue that stores failed messages) and limit the number of retries.
+
+On top of that, there are many details that need to be configured, for example:
+- We should configure the dead letter queue to store failed messages for 14 days (the maximum).
+- We should set up an alarm that sends our team an email whenever there are failed messages in the dead letter queue.
+- Many other settings need to be fine-tuned: the SQS “visibility timeout”, the Lambda max concurrency, message batching, etc.
+
+## A production-ready approach
+
+Here is a preview of a `serverless.yml` configuration that includes those best practices:
+
+```yaml
+# serverless.yml
+functions:
+  worker:
+    handler: worker.handler
+    timeout: 10 # seconds
+    reservedConcurrency: 10
+    events:
+      - sqs:
+          arn: !GetAtt ReportGenerationQueue.Arn
+          batchSize: 1
+resources:
+  Resources:
+    ReportGenerationQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: !Sub '${AWS::StackName}-myqueue'
+        VisibilityTimeout: 60
+        MessageRetentionPeriod: 172800
+        RedrivePolicy:
+          maxReceiveCount: 5
+          deadLetterTargetArn: !GetAtt DeadLetterQueue.Arn
+    DeadLetterQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        MessageRetentionPeriod: 1209600
+```
+
+If we wanted to add an alarm for failed messages, we would need 30 more lines of YAML.
+
+## Serverless queues and workers with Lift
+
+We are currently working on a “Queues” component that can be deployed via `serverless.yml`:
+
+```yaml
+queues:
+  report-generation:
+    worker:
+      handler: worker.handler
+      reservedConcurrency: 10
+```
+
+As we can see in the example above, there is a new `queues` section that lets us define queues (and their workers). In that instance, we define a report-generation queue and its worker function.
+
+On `serverless deploy`, Lift will create:
+- A report-generation SQS queue configured following best practices.
+- A worker Lambda function, that will be automatically subscribed to the SQS queue.
+- A report-generation-dlq SQS “dead letter queue” that will receive failed messages.
+
+We are considering several settings on the component, including setting an email alert on failed messages:
+
+```yaml
+queues:
+  report-generation:
+    alarm: alerting@my-company.com
+    worker:
+      ...
+```
+
+Here is a complete example with a publisher Lambda function:
+
+```yaml
+functions:
+  publisher:
+    handler: publisher.handler
+    environment:
+      QUEUE_URL: ${queues:report-generation.queueUrl}
+queues:
+  report-generation:
+    worker:
+      handler: worker.handler
+```

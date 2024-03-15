@@ -1,9 +1,11 @@
 import os
 
 import fitz
+from src.constants import SETTINGS
 
 from src.preprocessing.formatter.llm import FormatterLLM
 from src.preprocessing.pdf_parser.llm import PdfParserLLM
+
 
 
 def extract_text(pdf_path, output_path):
@@ -26,11 +28,11 @@ def extract_text(pdf_path, output_path):
 
     formatted_text = formatter_llm.format_text(parsed_text)
 
-    with open('articles/parsed/' + output_path, 'w', encoding='utf-8') as f:
+    with open(SETTINGS.parsed_output + output_path, 'w', encoding='utf-8') as f:
         f.write(formatted_text)
 
 
-def recursive_extract_text(input_dir):
+def recursive_extract_text(input_dir, overwrite=False):
     """
     Function to recursively extract and format the text from all PDF files in
     a directory and its subdirectories.
@@ -39,6 +41,10 @@ def recursive_extract_text(input_dir):
         for file in files:
             if file.endswith('.pdf'):
                 output_path = file.split('/')[-1].replace('.pdf', '.txt')
+
+                if not overwrite and os.path.exists(SETTINGS.parsed_output + output_path):
+                    print(f'File {output_path} already exists, skipping...')
+                    continue
 
                 pdf_path = os.path.join(root, file)
                 print(f'Processing {pdf_path}', end='\n')

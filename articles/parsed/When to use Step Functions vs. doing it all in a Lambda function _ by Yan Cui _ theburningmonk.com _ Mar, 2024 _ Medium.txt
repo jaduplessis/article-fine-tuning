@@ -1,0 +1,77 @@
+
+# When to use Step Functions vs. doing it all in a Lambda function
+
+I’m a big fan of AWS Step Functions. I use it to orchestrate all sorts of workflows, from payment processing to map-reduce jobs. Why it’s yet another AWS service you need to learn and pay for. And it introduces additional complexities, such as:
+- It’s hard to test.
+- Your business logic is split between configuration and code.
+- New decision points. Such as whether to use Express Workflows or Standard Workflows.
+
+So it’s fair to ask “Why should we even bother with Step Functions?” when you can do all the orchestration in code, inside a Lambda function. Let’s break it down.
+
+## Lambda pros
+
+1. Doing all the orchestration in code is simpler. It’s more familiar. Everything you can do in Step Functions, you can do with just a few lines of code. Case in point:
+
+```javascript
+module.exports.handler = async (event) => {
+    // error handling
+    try {
+        await doX()
+    } catch (err) {
+        // handle errors
+    }
+    // branching logic
+    if (condition === true) {
+        await doSomething()
+    } else {
+        await doSomethingElse()
+    }
+    // parallelism
+    const promises = event.input.map(x => doY())
+    const results = await Promise.all(promises)
+    return results
+}
+```
+
+2. It’s likely cheaper. A Step Functions state machine would likely use Lambda for its Task states. In which case, you’d end up paying for both:
+- The Lambda invocations. There are multiple invocations instead of just one. However, the total billable execution time should be similar.
+- Step Functions state transitions. At $25 per million state transitions, it’s one of the more expensive services in AWS. Paying for two services is likely more expensive than paying for just one.
+3. It’s likely more scalable. When you use both Step Functions and Lambda functions (for the Task states) you are constrained by the throughput limits of both services. Step Functions Standard Workflows have modest limits on the no. of state transitions and the no. of executions you can start per second. Both of these limits can be raised. So with proper planning, they wouldn’t be an issue. Without Step Functions, you are limited only by the concurrent executions limit on Lambda. Similarly, Lambda has default throughput limits on the no. of concurrent executions. Again, with proper planning, and given the recent scaling changes for Lambda, you will be OK. Both the cost and scalability arguments are situational and depend on several architectural choices.
+
+## Lambda cons
+
+1. Cold starts.
+2. 15 mins max duration.
+3. Not good for waiting. Because you pay for execution time by the milliseconds. It’s a poor solution when it comes to waiting for something to happen because all that execution time (and money) is wasted.
+
+## Step Functions pros
+
+1. The visual workflows make it very easy to debug problems. This is true even for non-technical team members, such as product owners and customer support teams.
+2. Step Functions has a built-in audit history of everything that happened, including:
+- When did a state start?
+- What were the input and output?
+- Error message and stack trace.
+3. Step Functions have direct service integration with almost every AWS service. So it’s possible to implement an entire workflow without needing any Lambda functions.
+4. No Lambda, no cold starts. No cold starts = more predictable performance.
+5. Long execution time. A Standard Workflow can run for up to a year.
+6. Callback patterns are a great way to support human decisions (e.g. approve a deployment request) in a workflow.
+7. Standard Workflows are arguably the most cost-efficient way to wait. Because you don’t pay for the duration, only the state transition.
+8. You can implement more robust error handling. This is important for business-critical workflows.
+
+## Step Functions cons
+
+1. Cost.
+2. Learning curve.
+3. More complexity. There are a lot more things to configure and manage.
+4. Your business logic is split between the State Machine definition and your code (if using Lambda for Task states).
+5. Hard to test. However, this is getting easier with the new TestState API.
+
+## Conclusion
+
+In conclusion, Step Functions offer a plethora of capabilities. But they come with their own set of complexities and costs.
+Whether it’s right for you depends on the demands of your use case.
+Generally, I advocate for the path of least resistance: simple workflows call for simple solutions. And Lambda functions excel in these scenarios.
+However, for many workloads, Step Functions can simplify the implementation with its built-in functionalities that would otherwise require custom solutions.
+For example, when you need to incorporate human decisions into a workflow. You should use Step Functions and leverage its callback patterns instead of creating a bespoke solution.
+Similarly, for workflows where resuming from a point of failure is important, you should go with Step Functions.
+Personally, I heavily lean towards Step Functions for business-critical workflows. The advantages of visualization, audit trails, and robust error handling align with the high stakes involved. These workflows, like payment processing, warrant the extra investment in Step Functions due to their critical nature.

@@ -1,0 +1,16 @@
+
+# Announcing the Alpha Release of sls-test-tools — Bringing Simplicity to Serverless Integration Testing
+
+Today we’re very pleased to announce the alpha release of sls-test-tools — providing a range of utilities, setup, teardown and assertions to make it easier to write effective and high quality integration tests for Serverless architectures on AWS. We have a strong view that, where possible, testing of Serverless architectures should happen on the real underlying services, avoid mocks wherever possible. Although Serverless allows for ephemeral (short-lived) architectures to be deployed, making assertions can end up being complex and verbose — reducing test readability. Packaged as an npm module, sls-test-tools provides a set of custom jest matchers to bring simplicity to integration testing. Initially we’ve added matchers to help integration testing of EventBridge based integrations — following the SQS interception approach we’ve shared previously. Using sls-test-tools the underling mechanisms of this approach are completely abstracted — resulting in quick to write and highly readable tests:
+
+```javascript
+const eventBridgeEvents = await eventBridge.getEvents()
+expect(eventBridgeEvents).toHaveEvent();    
+expect(eventBridgeEvents).toHaveEventWithSource("order.created");
+```
+
+(See full example in the sls-test-tools README)
+
+We’re in the early stages of open-sourcing our testing strategies, and sls-test-tools is definitely going to evolve and change (this is just the alpha). Your feedback is very welcome — we’ll be monitoring GitHub Issues regularly, along with supporting any Pull Requests.
+
+We’re excited to be adding more matchers from our best practices, as well as involving community contributions. In addition, sls-test-tools is initially bringing assertions to jest — this is great for JS/TS developers, but we’ll be keen to add further language support as the tool matures. Are you as excited as we are? ⭐ the repository and let us know! Thanks to Sarah Hamilton and Alex White for helping to get this out!

@@ -1,0 +1,72 @@
+
+# The one mistake everyone makes when using Kinesis with Lambda
+
+## AWS Kinesis and Lambda are a great combo for processing large amounts of data in real-time. However, there’s a common oversight that many developers make when integrating these two services.
+There are established best practices for configuring Lambda’s EventSourceMapping for Kinesis:
+- Configure an OnFailure destination for failed records.
+- Enable BisectBatchOnFunctionError.
+- Override MaximumRetryAttempts. Choose a value that gives failed messages a reasonable number of retries before sending them to the OnFailure destination.
+
+These are great advice for building a resilient data processing pipeline and guarding against poison messages. But one crucial detail is missing: the payload captured in the OnFailure destination does not contain the event payload.
+
+This is what will be captured in the OnFailure destination.
+
+```json
+{
+  "requestContext": {
+    "requestId": "cf6fa2a6-48e2-49a6-bc23-7ed2b154b176",
+    "functionArn": "arn:aws:lambda:us-east-1:xxx:function:kinesis-processor",
+    "condition": "RetryAttemptsExhausted",
+    "approximateInvokeCount": 4
+  },
+  "responseContext": {
+    "statusCode": 200,
+    "executedVersion": "$LATEST",
+    "functionError": "Unhandled"
+  },
+  "version": "1.0",
+  "timestamp": "2023-12-10T22:06:23.446Z",
+  "KinesisBatchInfo": {
+    "shardId": "shardId-000000000000",
+    "startSequenceNumber": "4964723877401875844914379084747495239034204468389137",
+    "endSequenceNumber": "496472387740187584491437909411123017485931487851477729",
+    "approximateArrivalOfFirstRecord": "2023-12-10T22:05:59.280Z",
+    "approximateArrivalOfLastRecord": "2023-12-10T22:06:19.196Z",
+    "batchSize": 3,
+    "streamArn": "arn:aws:kinesis:us-east-1:xxx:stream/MyKinesisStream"
+  }
+}
+```
+
+The KinesisBatchInfo contains the shard ID, sequence numbers and batch size. The actual data payload — the heart of the event that you need for processing and analysis — is not included.
+
+This omission can lead to significant issues:
+1. Difficulty in debugging: Without the actual event data, pinpointing the cause of the failure becomes a complex task.
+2. Data loss: If you are not able to fetch the record before it expires from the stream, then the data is lost forever. Default retention for a Kinesis stream is 24 hours. If the error occurs on a Saturday, likely, your developers won’t see it until they are back in the office on Monday. By then, the record is no longer available in the stream.
+3. Increased complexity: Developers need to implement additional mechanisms to retrieve and store the original event data.
+
+Most people don’t realise this and many have been caught off-guard when they encounter a failed message for the first time!
+
+## Hydrating event data
+To handle this situation, you need to hydrate the event data yourself.
+Instead of using an SQS queue as the OnFailure destination directly:
+Let’s add a layer of indirection:
+For the Kinesis function, use an SNS topic as the OnFailure destination.
+Subscribe another Lambda function to this topic. This hydrate function retrieves the record from the Kinesis stream.
+
+Because the hydrate function is invoked asynchronously by SNS, we can configure an OnSuccess destination to write its return value to the original SQS DLQ. This way, we don’t have to maintain the code to write to SQS. However, the downside is that the message captured in the SQS queue is more verbose (see below). All we care about is the responsePayload where we enriched the original OnFailure message with the KinesisBatch array.
+
+```json
+{
+  "version": "1.0",
+  "timestamp": "2023-12-10T22:43:49.863Z",
+  "requestContext": {
+    "requestId": "2944cfad-d4c4-4b28-ad45-bfdd7f4526ef"
+  }
+}
+```
+
+If you’re interested in trying this out yourself, then please take a look at this Github repo. In particular, look at the hydrate function to see how to retrieve the records from the Kinesis stream. It’s worth noting that this approach also works for DynamoDB streams. In the GitHub repo linked above, you will find working examples for both Kinesis and DynamoDB streams.
+
+## Next steps
+I hope this helps you avoid a very common mistake people make when working with Kinesis and Lambda. To learn more about building production-ready serverless applications, check out my upcoming workshop. I’m working on some new lessons to incorporate the latest changes from re:Invent 2023. And I’m adding support for CDK as well, due to popular demand! Hope to see you there.

@@ -22,24 +22,15 @@ class Settings(BaseSettings):
 
     openai_api_key: SecretStr
     anthropic_api_key: SecretStr
-
-
-    docs_url: List[str] = [
-        'https://medium.com/serverless-transformation/building-a-robust-serverless-messaging-service-with-amazon-eventbridge-pipes-and-cdk-bf8250d10825',
-        # 'https://medium.com/serverless-transformation/enabling-the-optimal-serverless-platform-team-cdk-and-team-topologies-fe4d9299adc9',
-        # 'https://medium.com/serverless-transformation/lambda-dashboards-cdk-and-you-820f24a3d79c',
-        # 'https://medium.com/serverless-transformation/building-a-massively-scalable-serverless-chat-application-with-aws-appsync-dbe1733dcb95',
-        # 'https://medium.com/serverless-transformation/integration-testing-step-functions-using-sls-test-tools-31a20904a092',
-        # 'https://medium.com/serverless-transformation/serverless-image-object-detection-at-a-social-media-startup-3691964be428',
-    ]
-
-
-
     
     supabase_url: str
     supabase_service_key: SecretStr
 
-    bucket_name: str = 'article-gpt'
+    fine_tuning_prompt: str = "Can you format this text for the ALEIOS style and tone?"
+    fine_tuning_content: str = "Gob is a stylistic chatbot that is excellent at rephrasing text."
+
+    parsed_output: str = 'articles/parsed/'
+
 
 
 SETTINGS = Settings()  # type: ignore

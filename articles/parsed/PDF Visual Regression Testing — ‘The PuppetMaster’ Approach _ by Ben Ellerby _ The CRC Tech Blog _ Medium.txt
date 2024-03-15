@@ -1,0 +1,113 @@
+
+# PDF Visual Regression Testing — 'The PuppetMaster' Approach
+
+Test automation is the only way to ensure quality in a CI (continuous integration) environment. Testing backend logic and web frontends, although time consuming and difficult to ensure accuracy, is well documented and best practices exist. PDF generation a feature often involved in consumer facing products (e.g. booking confirmation, data analysis, personalised planning documents). Yet, although often a mission critical feature, testing the generated PDFs is generally overlooked. We experimented with a new approach to PDF testing by combining Puppeteer (a way to manipulate headless Chrome), the jest JavaScript testing framework and a visual regression jest extension from American Express. The basic premise of visual regression testing is comparing known good snapshots of an interface with ones generated after a change to the underlying code. With builds failing if a difference of pixels is detected above some threshold.
+
+To do this we need:
+1. A way to convert a PDF page to an image snapshots that can be used by an image comparison tool. The PDF format is not good for comparison and does not work with existing image diff tools. Puppeteer will be able to generate a PNG of each page of the PDF.
+2. A test running framework (jest).
+3. A tool to compare the generated snapshots to new snapshots. (jest-image-snapshot).
+
+## Generating snapshot images from a PDF
+
+Puppeteer is a headless instance of chrome. It can be used to generate visual snapshots of websites to use for image comparison via a simple `screenshot` function.
+
+```javascript
+// Example of using Puppeteer's screenshot function
+```
+
+Chrome has a built in PDF viewer, and Puppeteer can manipulate chrome to open a url or a file. So Puppeteer can open a PDF file and then be used to generate a screenshot of the page. From the example above we can change line 6 to use the file protocol to open a local PDF file.
+
+One issue with this approach is the scrollbar on the right hand side of the viewer. Due to the way chrome loads its scrollbar it is good to remove this from the snapshot as it can add flakiness and timing issues to the tests. Luckily Puppeteer can take a `clip` parameter to its screenshot function to crop the screenshot. For instance:
+
+```javascript
+// Example of using Puppeteer's clip parameter
+```
+
+## In jest
+
+Jest is a delightful JavaScript Testing Framework with a focus on simplicity. Adding jest to an existing JS project is as simple as:
+
+```bash
+// Commands to add jest
+```
+
+Our test template will then be as follows:
+
+```javascript
+describe('pdf suite', () => {
+   it('works', async () => {
+      expect(1).toBe(1);
+   });
+});
+```
+
+American express have a great extension to jest providing image comparison for visual regression testing. It can be added as follows:
+
+```bash
+yarn add -D jest-image-snapshot
+npm i --save-dev jest-image-snapshot
+```
+
+Jest’s inbuilt expect object can then be expanded as follows:
+
+```javascript
+const { toMatchImageSnapshot } = require('jest-image-snapshot');
+expect.extend({ toMatchImageSnapshot });
+```
+
+## Setting up the browser for jest
+
+```javascript
+const puppeteer = require('puppeteer');
+describe('pdf suite', () => {
+   let browser;
+   beforeAll(async () => {
+      browser = await puppeteer.launch({ headless: false });
+   });
+   it('works', async () => {
+      expect(1).toBe(1);
+   });
+   
+   afterAll(async () => {
+      await browser.close();
+   });
+});
+```
+
+## Testing the first page
+
+The Puppeteer screenshot code can now be combined with the jest image comparison setup.
+
+```javascript
+const puppeteer = require('puppeteer');
+describe('pdf suite', () => {
+   let browser;
+   beforeAll(async () => {
+      browser = await puppeteer.launch({ headless: false });
+   });
+   it('works', async () => {
+      const page = await browser.newPage();
+      await page.goto("file:///Users/me/project/test.pdf");
+      await page.waitFor(500); // depends on the size of your file, requires some manual configuring.
+      const image = await page.screenshot({clip: {
+         x: 0,
+         y: 0,
+         width: 790,
+         height: 600,
+      }});
+      expect(image).toMatchImageSnapshot({
+         failureThreshold: '0.10',
+         failureThresholdType: 'percent',
+         includeAA: true,
+      });
+   });
+   afterAll(async () => {
+      await browser.close();
+   });
+});
+```
+
+Now we can edit the PDF under inspection, rerun and get the failure percentage and a visual diff that can be manually inspected.
+
+In conclusion, we have used the above approach to catch issues in large generated PDF reports with complex graphs, styling and media. The tests saved hours of manual inspection time and discovered issues we never knew we had.

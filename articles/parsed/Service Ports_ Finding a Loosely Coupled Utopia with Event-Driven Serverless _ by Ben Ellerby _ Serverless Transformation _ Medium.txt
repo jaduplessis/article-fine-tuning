@@ -1,0 +1,70 @@
+
+# Service Ports: Finding a Loosely Coupled Utopia with Event-Driven Serverless
+
+When we build Event-Driven Serverless architectures using Domain-Driven Design, we end up with a set of services clearly split by business function and communicating asynchronously over an event channel (e.g. Amazon EventBridge). These architectures bring many advantages: loose coupling, independent deployability, testability, and reduced complexity, to name a few. Yet, no matter how elegant our modelling of the domain, there are always some cross-cutting infrastructure dependencies (e.g. the event channel itself) that can’t be eliminated.
+
+How we deal with them determines if we get a loosely-coupled utopia, or a sprawling tangle of semi-independent services. When you’ve put in 90% of the effort, don’t let this be the final stumbling block.
+
+In this article we’ll see how clearly defined Service ports resolve the final 10% of infrastructure dependencies and bring loose coupling, independent deployment/testing and increase development velocity.
+
+## How the problem arises
+
+We’ve discussed previously how Amazon EventBridge can be combined with strong Domain-Driven Design to create such architectures (see EventBridge Storming). When we build a collection of Services (or “microservices”) in such a way there are still some cross-cutting global dependencies. These dependencies get in the way of developing services independently, make integration testing difficult and can create complex code in our infrastructure definition. In addition, when such dependencies are not made explicit, the deployment order of Services can become a mystery at best, and a set of race conditions at worst.
+
+To make this more tangible, let’s imagine we conducted an EventBridge Storming session to understand an example problem domain of an e-commerce website by gathering all the business events of the system into Bounded Contexts. From this session we would understand the business domain, the events that belong to it, and how they can be grouped together. From such a session we could derive the following services, grouping together the domain events and creating service boundaries with loose coupling.
+
+A high level view of the architecture would look as follows:
+
+Notice two classic shared infrastructure dependencies are the EventBus itself, and the Cognito User Pool. Reference to these in the infrastructure is simple, it’s an ARN. But requiring these dependencies to be deployed (with everything else in the stack they belong to) makes independent development and testing complex. In addition, these references can also be hidden in the weeds of the infrastructure as code files.
+
+Such cross-cutting infrastructure dependencies need to be intentional, and to be designed for and made explicit to the developers. If not, this will lead to several problems:
+
+“The Source of Existence Problem”. We could keep this definition of the dependencies in the Finance Service and reference it in the HR Service. When it’s 2 Services it’s fine, but what about 10 Services all needing this resource.
+
+In addition, we’ve created some knock-on issues. The Finance Service now needs to be deployed before the HR service. In production this seems manageable, it will happen the first time; but what about Dev, Staging and UAT? Also, with Serverless, one amazing benefit is ephemeral stacks (see Serverless Flow) — how will this be achieved?
+
+“The New Joiner Problem”: Independent development of the HR service is now no longer possible. Any new developer to the company will have had to have deployed their own version of the Finance Service before they can develop on the HR service — or they depend on the staging version and
+
+## Hexagonal Architecture To The Rescue
+
+Ports and Adapters, or hexagonal architecture, is an approach that tries to make dependencies interchangeable. The interchangeable aspect allows development and testing to be simplified. In addition, clear specification of ports ensures that dependencies are explicitly defined. Components list their connections as ports, with an API specification of the protocol they expect. One or more adapters can then implement this protocol.
+
+A classic example is a UI port implemented as either a GUI for users or a CLI for development ease. These are typically at the application code level, but we can bring the concept up to higher level architecture dependencies.
+
+If we look at our example above, the clear dependencies are an EventBus and a UserPool. We could take things further and make these more abstract dependencies, but for now let’s just expect an EventBridge EventBus (any EventBridge EventBus) and a Cognito UserPool (any Cognito UserPool).
+
+A simple representation of these ports can be shown in a Serverless Framework IaC yaml file:
+
+```yaml
+Notice here that it’s environment dependent, and there is a clear switch case on the environment. This can be easily overwritten to support a temporary CI stack as per Serverless flow, and switched out manually during local development as needed.
+```
+
+Creating this explicit ports section makes the interfaces clearer and should be further explained in a consistent README section for search service of the architecture.
+
+## Where Should Cross-Cutting Infrastructure Dependencies Live?
+
+Going back to our example of the Finance Service. This service relies on an EventBus and a Cognito User Pool. But where should these dependencies live?
+
+If they live with a Service, e.g. the Finance Service, they will be deployed with it — but is that correct? Well no, just because there is a change to the Finance Service, it does not mean there should be a deployment of the EventBridge or Cognito User Pool.
+
+Our Ports have mitigated some of the interdependence that would be created, but that does not mean we should arbitrarily pick a host Service. Instead we should see these as Services, very simple services due to the abstraction our Cloud provider is giving us over Event Bussing and User Authentication.
+
+It’s tempting to create a “global” or “central” or “infra” repo and dump any cross cutting dependency into this. Avoid this temptation. It will create a dumping ground for anything needed by > 1 Service and will become a mess quickly. Instead create very small Services for each cross-cutting dependency. These will simply contain the Infrastructure as Code configuration, the CI/CD Pipeline and any integration tests.
+
+## Auto-Scaffolding Dev and Test “Adapters”
+
+Any developer asked to build a basic feature on this stack can now deploy an EventBus and UserPool manually or with a script, without requiring all the other stacks.
+
+When it comes to the pipeline, we can make the environment selection and the resulting ports explicit. This can be in a dedicated part of the CI/CD pipeline as a script, or even better as a conditional block in the Infrastructure as Code template (if dev, if test, if prod).
+
+Further to this, we can have conditional testing infrastructure on the pipeline to create a test EventBus and UserPool as needed (with easy integration to tools like sls-test-tools for integration testing).
+
+More advanced adapters: Of course, another advantage of using the traditional “ports and adapters” approach is that we don’t have to give an EventBus if we build our ports carefully. We’ve discussed the disadvantages of mocking from an integration testing perspective, and the change in weighting of the traditional testing pyramid of a heavier emphasis on integration testing. There are though situations where flexibility around the actual dependency can be useful — e.g. TDD, testing failure modes, and load testing.
+
+## Conclusion: You can’t avoid all infrastructure dependencies — but you can choose how you handle them
+
+Strong Domain-Driven Design and an Event-Driven Service-Oriented Architecture go a long way to help ensure a manageable and loose coupled architecture. There are, however, some cross-cutting infrastructure dependencies that occur and blur the services boundaries. If these are not made explicit and isolated, they can have a huge impact on the system design, coupling, cognitive load, and deployment ordering.
+
+Taking a hexagonal architecture approach with clear Service Ports allows us to make these explicit, and remove cross service dependencies from deployment, testing and development.
+
+We should use DDD to avoid dependencies, but not hide the ones we have. If there is a true infrastructure dependency (e.g. event bus, user identity), we should design for it — ensuring it does not open the floodgates to a complex distributed monolith. In addition, don’t hide these inside arbitrary host Services but create small, simple and purposeful Services to contain the configuration, deployment and testing of these dependencies.

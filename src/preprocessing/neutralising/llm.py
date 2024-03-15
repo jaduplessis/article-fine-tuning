@@ -14,6 +14,7 @@ class NeutraliserLLM:
   def __init__(self, file_path: str):
     self.model = self.start_model()
     self.corpus = self.load_corpus(file_path)
+    self.neutralise_chunks = []
 
 
   def start_model(self):
@@ -60,11 +61,8 @@ class NeutraliserLLM:
     return neutralised_chunk
   
 
-  def neutralise_chunks(self) -> list:
+  def neutralise_corpus(self) -> list:
     ''' Function to neutralise the chunks
-
-    Args:
-      chunks: The chunks to neutralise
 
     Returns:
       neutralised_chunks: The neutralised chunks
@@ -76,6 +74,7 @@ class NeutraliserLLM:
       neutralised_chunk = self.invoke_neutraliser(chunk)
       neutralised_chunks.append(neutralised_chunk)
 
+    self.neutralise_chunks = neutralised_chunks
     return neutralised_chunks
   
 
