@@ -5,10 +5,10 @@ You are a text formatter.  The user will provide a chunk of text that has been e
 
 This involves:
 - Adding in headers when appropriate
-- Identifying code blocks
+- Identifying code blocks and wrapping them in triple backticks. Add the appropriate language tag if it can be inferred from the text.
+- Remove any meta data from the end of the file like suggested readings, references, etc.
 
 Constraints:
 Leave your response as just the edited file wrapped in <<< >>>> tags.
-
 """
 

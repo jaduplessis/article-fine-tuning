@@ -3,8 +3,19 @@
 Ben Ellerby · Follow
 Published in Serverless Transformation · 7 min read · Aug 10, 2022
 
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+Serverless, and related technologies, have enabled teams to move faster, reduce total cost of ownership and overall empowered developers to have greater ownership of the systems they build. However, Serverless is not a silver bullet — there is an organisational side that’s key to unlock the full benefits of Cloud.
+When it comes to team structure as we adopt more Cloud-Native technologies, like Serverless, there are 2 key areas that need to be rethought:
+The top-down approach to security bottlenecking developers
+Overwhelming cognitive load
+As discussed above, the solution is not purely technical — but CDK can enable the socio-technical change needed.
+
 ## Rethinking Security
-In many large organisations that move to adopt Serverless, security is typically seen as a top-down bottleneck that slows development and innovation. At the same time security incidents have been rising for years, and a strong cyber security posture requires organisations to work together, not just throwing things over the wall to InfoSec. Security as “Top Down” Blocker As companies have started to adopt Cloud and DevOps developers have been brought closer to security, yet a wall still exists in this collaboration. With Serverless the application code and the cloud are inextricably linked, meaning developers have moved further into the realm of the security. This typically creates some turf wars in the initial stages of a transformation to adopt Serverless, but also provides the opportunity for us to rethink the traditional security approach. Ideally Security is seen as an enabling function, with tools, approaches and teams enabling a secure by default paradigm. This requires us to turn our view of security on its head and have development teams be enabled by security rather than held hostage from deploying or innovating. This requires a change in engineering team structure, as well as a technical solution to enable a bottom-up secure by design paradigm. The combination of “Team Topologies” and CDK can be leveraged to achieve this change.
+In many large organisations that move to adopt Serverless, security is typically seen as a top-down bottleneck that slows development and innovation. At the same time security incidents have been rising for years, and a strong cyber security posture requires organisations to work together, not just throwing things over the wall to InfoSec.
+Security as “Top Down” Blocker
+As companies have started to adopt Cloud and DevOps developers have been brought closer to security, yet a wall still exists in this collaboration. With Serverless the application code and the cloud are inextricably linked, meaning developers have moved further into the realm of the security. This typically creates some turf wars in the initial stages of a transformation to adopt Serverless, but also provides the opportunity for us to rethink the traditional security approach.
+Ideally Security is seen as an enabling function, with tools, approaches and teams enabling a secure by default paradigm. This requires us to turn our view of security on its head and have development teams be enabled by security rather than held hostage from deploying or innovating.
+This requires a change in engineering team structure, as well as a technical solution to enable a bottom-up secure by design paradigm. The combination of “Team Topologies” and CDK can be leveraged to achieve this change.
 
 ## Cognitive Load
 Cognitive load is a form of friction on teams — the greater the cognitive load the slower their velocity (and often the lower their satisfaction). One key way to reduce cognitive load is to design our architecture and systems on the underlying domain and building services based on independent subsections of the domain to enable independence of teams and services. This allows teams to restrict their scope to a subset of the overall domain complexity.
@@ -76,7 +87,7 @@ new s3.Bucket(this, 'MyFirstBucket', {
 
 And finally L3 constructs are patterns for common use cases, e.g. a REST API, often composing multiple types of resources into an end-to-end pattern.
 
-### Baked-In Best Practices — L2+
+#### Baked-In Best Practices — L2+
 
 L2 Constructs are built by the AWS CDK team and typically encapsulate L1 constructs, adding sensible best-practice defaults. A platform team can take this a step further by wrapping these L2 construct with further built-in defaults and best-practices that represent their organisational specific requirements.
 

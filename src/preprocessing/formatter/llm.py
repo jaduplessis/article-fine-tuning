@@ -22,8 +22,7 @@ class FormatterLLM():
     '''
     metadata_model = ChatOpenAI(
       api_key=SETTINGS.openai_api_key.get_secret_value(),
-      # model="gpt-4-0125-preview",
-      model="gpt-3.5-turbo",
+      model="gpt-4-0125-preview",
       temperature=0.7,
       max_tokens=3500,
     )

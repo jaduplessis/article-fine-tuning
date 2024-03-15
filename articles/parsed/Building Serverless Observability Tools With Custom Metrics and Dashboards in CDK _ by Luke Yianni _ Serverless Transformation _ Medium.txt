@@ -1,0 +1,132 @@
+```
+# Building Serverless Observability Tools With Custom Metrics and Dashboards in CDK
+Luke Yianni · Follow
+Published in Serverless Transformation · 7 min read · Nov 2, 2022
+
+Meaningful logging is a must for Serverless architectures, and of course, there are a lot of third-party tools that can help with observability. However, there is a lot of untapped potential in using Cloudwatch Dashboards and Alarms. This article will show you how to have powerful observability, natively, across your project.
+
+## Current observability solutions in Serverless
+Serverless (and almost all cloud) projects comprise multiple services carrying out different functions to form your product. This modularity is incredibly powerful, but by its very nature makes it hard to track any issues — there’s a tonne of moving parts and it’s often difficult to tell exactly where something went wrong. This lack of observability is one of the largest gripes people have when adopting serverless, and companies have relied on a huge host of pre-built tools to help better understand their products. Until now, setting up robust monitoring using AWS services has been a painful process that takes up a lot of upfront work before getting any real benefit.
+
+Now, The AWS Cloud Development Kit (AWS CDK) changes all of that. CDK is an open-source framework to create Infrastructure as Code (IaC) and provision it through AWS CloudFormation. It supports the most common Object Oriented Programming Languages, and for Serverless that’s most importantly Typescript. CDK utilises this Object Oriented paradigm, and as a result, is instinctually modular and extendable. This allows you to abstract dashboards to use across services and teams, being incredibly easy to create custom constructs compared to other Cloud Formation-creating IaC that use YAML syntax. This has changed the creation of observability tools from arduous to automatic, and now makes native the solution for project observability.
+
+Existing tools still have their place and for off-the-shelf there is no better, but for highly customizable observation in environments where you can’t leverage external tools, CloudWatch IaC provides a powerful and flexible option if you’re willing to dedicate the time.
+
+## Fair Warning
+CDK is a maturing product, and at times, the documentation can be both sparse and complicated — it’s easy to get lost down a rabbit hole, which I spent an embarrassingly long amount of time doing. At the end of that process, however, I’ve now worked with the tool enough to be able to build incredibly flexible monitoring tools, alongside setting automated alarms should any issues arise. This article should help demystify Cloudwatch in CDK, and set you in the right direction to monitor your Serverless applications.
+
+We will cover:
+- The infrastructure for a Cloudwatch Dashboard
+- How to publish your custom metrics
+- How to create widgets and a dashboard to represent them
+- Setting up an Alarm for a Metric
+- Sending an email with SNS when an Alarm is triggered
+- Storing an email list in SSM
+
+## The pieces that make up a Cloudwatch Dashboard
+A Cloudwatch Dashboard is made up of three parts:
+- Metrics — the actual data you want to show in the dashboard
+- Widgets — effectively a ‘graph’ in the dashboard
+- Dashboards — the collection of widgets
+
+A Dashboard can contain multiple Widgets, and a Widget can visualize multiple Metrics. An example of multiple metrics in a Widget
+
+## Creating a Metric
+The first step in creating a dashboard is to create a metric. There are two kinds, default and custom metrics.
+
+### Default Metrics
+By default, lambdas already come with some metrics you can record, such as Errors and the Number of Invocations. The whole list can be found here. It’s straightforward to reference these metrics in CDK, and the official documentation for doing so is quite good! Here’s how you reference a metric that shows the average number of errors per minute.
+typescript
+declare const fn: lambda.Function;  
+const minuteErrorRate = fn.metricErrors({   
+  statistic: 'avg',   
+  period: Duration.minutes(1),   
+  label: 'Lambda failure rate' 
+});
+
+Accumulating all the constructs discussed in this article, we could have a construct like the one below. The one in my project is incredibly similar,
+
+with the only difference being that I create a REST endpoint as well as the constructs below — the Object Oriented nature of CDK helps emphasise the power of creating custom constructs!
+Depending on the granularity of your project, you can flexibly change when and how you are instantiating different constructs. For example, you might want to have a new dashboard for each Lambda, and can easily do so by creating a Dashboard in the Lambda Construct below, rather than passing it in as a parameter. For our use case, we only wanted one Dashboard and SNS Topic per stack, so created them at the top level of our project and passed it down as a parameter.
+I hope this has been a helpful insight into Cloudwatch in CDK, and shown you how powerful of a tool it can be!
+
+type MyLambdaProps = {overheadMetric
+  vpc: IVpc; 
+  securityGroups: [ISecurityGroup];
+  role: Role;
+  name: string;
+  entry: string;
+  dashboard: Dashboard;
+  timeout?: Duration;
+  snsAction?: SnsAction;
+};
+export class MyLambda extends Construct {
+  functionArn: string;
+  constructor(scope: Construct, id: string, props: MyLambdaProps) {
+    
+    super(scope, id);
+    
+    const stage = process.env.STAGE ?? 'Unknown';
+    
+    const {
+      vpc,
+      securityGroups,
+      role,
+      name,
+      entry,
+      apiResources,
+      httpMethod,
+      dashboard,
+      timeout,
+      snsAction,
+    } = props;
+    const overheadMetric = new Metric({
+      namespace: stage,
+      metricName: 'Overhead',
+      region: 'eu-west-1',
+      dimensionsMap: {
+        'Function Name': name,
+      },
+      period: Duration.minutes(5),
+      statistic: 'Average',
+    });
+    if (snsAction) {
+      const overheadAlarm = new Alarm(
+        this,
+        `${name} Overhead Alarm`,
+        {
+          metric: overheadMetric,
+          threshold: 1000,
+          comparisonOperator: 
+ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+          evaluationPeriods: 1,
+          alarmDescription: 'Alarm if the overhead for a lambda is 
+above 1 second',
+        },
+      );
+      overheadAlarm.addAlarmAction(snsAction);
+    }
+  dashboard.addWidgets(
+    new GraphWidget({
+      title: `${name} Overhead`,
+      width: 24,
+      left: overheadMetric,
+    }),
+  );
+  const lambda = new NodejsFunction(this, `${name}-lambda`, {
+    vpc: vpc,
+    handler: 'handler',
+    securityGroups: securityGroups,
+    runtime: Runtime.NODEJS_16_X,
+    entry: path.join(__dirname, `../${entry}`),
+    functionName: name,
+    environment: {
+      STAGE: stage,
+    },
+    role,
+    timeout: timeout ?? Duration.seconds(3),
+  });
+};
+
+Thank you for reading.
+```
