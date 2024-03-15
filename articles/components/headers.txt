@@ -1,0 +1,1049 @@
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## Introduction
+## Architecture
+## DynamoDB
+## GraphQL Explained
+## Queries
+## Mutations
+## Subscriptions
+## Resolvers
+## Pipeline Resolvers
+## Cost
+### Tips and Tricks
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## Introduction
+## Architecture
+## DynamoDB
+## GraphQL Explained
+## Queries
+## Mutations
+## Subscriptions
+## Resolvers
+## Pipeline Resolvers
+## Cost
+### Tips and Tricks
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+# serverless.yml
+# ...
+# Serverless webhooks with Lift
+## webhooks: stripe
+## Introduction
+## Architecture
+## DynamoDB
+## GraphQL Explained
+## Queries
+## Mutations
+## Subscriptions
+## Resolvers
+## Pipeline Resolvers
+## Cost
+### Tips and Tricks
+## We want our Cloud teams to be secure, fast, stable, reactive, autonomous and of course… happy & fulfilled! However, this isn’t always the case…
+## Rethinking Security
+## Cognitive Load
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+#### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+## DynamoDB Streams
+### Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+### SQS
+## How could the Architecture be Improved?
+### Filtering Options
+### Best Practice
+## Future Improvements to Pipes
+## Summary
+## The AWS Cloud Development Kit (CDK) is a framework that lets you define your Cloud Application resources using familiar programming languages such as TypeScript or Python. This allows developers familiar with these languages to apply their existing knowledge and get to grips with building Cloud infrastructure rapidly. By using provided high-level components, built with best practices as default, we can abstract much of the complexity away from the developer, and by encapsulating resources into constructs we can continue this practice as our resources scale in size and complexity.
+### What is Infrastructure as Code?
+### Why CDK?
+### CDK deploy process
+### Installation
+### The basics
+## Creating a Lambda
+## What is LocalStack
+## AWS services offered by LocalStack
+## Installation
+## pip install localstack
+## Example 1 - Creating S3 bucket
+## Copy a test.txt file to the bucket
+## Example 2 - Host a static website
+## The states which make up a Step Function
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## The Code
+## Final thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## The pieces that make up a Cloudwatch Dashboard
+## Creating a Metric
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+## Serverless will be the enabler for Edge
+## The naive approach
+### Simple webhook endpoint architecture
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+### Production-ready serverless webhook endpoint architecture
+# serverless.yml
+# ...
+# You can use native Serverless framework functionalities to define your processors
+# But you need raw Cloudformation to define API Gateway integration to EventBridge
+## Introduction
+## Architecture
+## DynamoDB
+## GraphQL Explained
+## Queries
+## Mutations
+## Subscriptions
+## Resolvers
+## Pipeline Resolvers
+## Frontend — Amplify & Apollo Client
+## Cost
+## Rethinking Security
+### Security as “Top Down” Blocker
+## Cognitive Load
+### Cognitive Load: The amount of working memory being used
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+### DynamoDB Streams
+## Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+## The AWS Cloud Development Kit (CDK) 
+## What is Infrastructure as Code?
+## Why CDK?
+## CDK deploy process
+## Installation
+## The basics
+## Creating a Lambda
+## Adding to the Stack
+## Deployment
+## Testing
+## What is LocalStack
+### How can it help us as a developer?
+## AWS services offered by LocalStack
+### Installation
+### Example 1 - Creating S3 bucket
+### Example 2 - Host a static website
+## The states which make up a Step Function
+## Should we test Step Functions?
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+### Assert that the state machine has the correct execution status
+### Now let’s check we get the right output given a valid input
+### Putting it all together
+## What is an ACL?
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## Final Thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## Creating a Metric
+### Default Metrics
+### Creating the Data Point:
+### Creating the Metric:
+### Creating a Dashboard & Widget
+## Creating an Alarm
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+### Lambda@Edge — Serverless services are already at the Edge
+# Serverless.yml file definition for a single Lambda@Edge function — the complete IaC template needed.
+### Firecracker — solving many challenges for Serverless that Edge computing will face
+## The naive approach
+### Simple webhook endpoint architecture
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+### Production-ready serverless webhook endpoint architecture
+# serverless.yml
+# ...
+# You can use native Serverless framework functionalities to define your processors
+# But you need raw Cloudformation to define API Gateway integration to EventBridge
+## Introduction
+## Architecture
+## DynamoDB
+## GraphQL Explained
+## Queries
+## Mutations
+## Subscriptions
+## Resolvers
+## Pipeline Resolvers
+## Frontend — Amplify & Apollo Client
+## Cost
+## Rethinking Security
+### Security as “Top Down” Blocker
+## Cognitive Load
+### Cognitive Load: The amount of working memory being used
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+### DynamoDB Streams
+## Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+## The AWS Cloud Development Kit (CDK) 
+## What is Infrastructure as Code?
+## Why CDK?
+## CDK deploy process
+## Installation
+## The basics
+## Creating a Lambda
+## Adding to the Stack
+## Deployment
+## Testing
+## What is LocalStack
+### How can it help us as a developer?
+## AWS services offered by LocalStack
+### Installation
+### Example 1 - Creating S3 bucket
+### Example 2 - Host a static website
+## The states which make up a Step Function
+## Should we test Step Functions?
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+### Assert that the state machine has the correct execution status
+### Now let’s check we get the right output given a valid input
+### Putting it all together
+## What is an ACL?
+## ACL as a Service:
+## Building Blocks of an ACL:
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## Final Thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## Creating a Metric
+### Default Metrics
+### Creating the Data Point:
+### Creating the Metric:
+### Creating a Dashboard & Widget
+## Creating an Alarm
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+### Lambda@Edge — Serverless services are already at the Edge
+# Serverless.yml file definition for a single Lambda@Edge function — the complete IaC template needed.
+### Firecracker — solving many challenges for Serverless that Edge computing will face
+## Introduction
+## Architecture
+## DynamoDB
+## GraphQL Explained
+## Queries
+## Mutations
+## Subscriptions
+## Resolvers
+## Pipeline Resolvers
+## Frontend — Amplify & Apollo Client
+## Cost

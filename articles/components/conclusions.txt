@@ -1,0 +1,84 @@
+## webhooks: stripe
+- authorizer: # accepts all function options
+  - handler: stripe/authorizer.main
+- path: /my-webhook-endpoint # required : path the endpoint should be exposed at
+- type: $request.body.type # optional : any static string or dynamically resolvable by API Gateway. Used to hydrate Eventbridge event's DetailType property
+```
+
+As we can see in the example above, there is a new webhooks section that lets us define webhooks (ideally, secluded by SaaS provider). In that instance, we define a stripe webhook.
+
+On serverless deploy, Lift will create:
+- An API Gateway v2 HTTP API with a route corresponding to the configured /my-webhook-endpoint path
+- A stripe-authorizer Lambda function, that will be invoked by API Gateway to ensure the notification signature is correct. This ensures the notification has not been tampered with and has been issued by Stripe.
+- A WebhookBus Eventbridge bus that dispatches all notifications received from Stripe with an event containing the following properties:
+{
+  "Source": "stripe", // the webhook component name
+  "DetailType": "payment_intent.succeeded", // body's type value
+  "Detail": {
+    // the whole notification body
+  }
+}
+
+If not provided, the type option defaults to Webhook.
+
+With the component deployed, you only need to register your processing Lambdas to perform specific operations:
+
+```
+## webhooks: stripe
+- authorizer: # accepts all function options
+  - handler: stripe/authorizer.main
+- path: /my-webhook-endpoint # required : path the endpoint should be exposed at
+- type: $request.body.type # optional : any static string or dynamically resolvable by API Gateway. Used to hydrate Eventbridge event's DetailType property
+```
+
+As we can see in the example above, there is a new webhooks section that lets us define webhooks (ideally, secluded by SaaS provider). In that instance, we define a stripe webhook.
+
+On serverless deploy, Lift will create:
+- An API Gateway v2 HTTP API with a route corresponding to the configured /my-webhook-endpoint path
+- A stripe-authorizer Lambda function, that will be invoked by API Gateway to ensure the notification signature is correct. This ensures the notification has not been tampered with and has been issued by Stripe.
+- A WebhookBus Eventbridge bus that dispatches all notifications received from Stripe with an event containing the following properties:
+{
+  "Source": "stripe", // the webhook component name
+  "DetailType": "payment_intent.succeeded", // body's type value
+  "Detail": {
+    // the whole notification body
+  }
+}
+
+If not provided, the type option defaults to Webhook.
+
+With the component deployed, you only need to register your processing Lambdas to perform specific operations:
+
+```
+
+
+
+## webhooks: stripe
+- authorizer: # accepts all function options
+  - handler: stripe/authorizer.main
+- path: /my-webhook-endpoint # required : path the endpoint should be exposed at
+- type: $request.body.type # optional : any static string or dynamically resolvable by API Gateway. Used to hydrate Eventbridge event's DetailType property
+```
+
+As we can see in the example above, there is a new webhooks section that lets us define webhooks (ideally, secluded by SaaS provider). In that instance, we define a stripe webhook.
+
+On serverless deploy, Lift will create:
+- An API Gateway v2 HTTP API with a route corresponding to the configured /my-webhook-endpoint path
+- A stripe-authorizer Lambda function, that will be invoked by API Gateway to ensure the notification signature is correct. This ensures the notification has not been tampered with and has been issued by Stripe.
+- A WebhookBus Eventbridge bus that dispatches all notifications received from Stripe with an event containing the following properties:
+{
+  "Source": "stripe", // the webhook component name
+  "DetailType": "payment_intent.succeeded", // body's type value
+  "Detail": {
+    // the whole notification body
+  }
+}
+
+If not provided, the type option defaults to Webhook.
+
+With the component deployed, you only need to register your processing Lambdas to perform specific operations:
+
+```
+
+
+

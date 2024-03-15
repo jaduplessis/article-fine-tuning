@@ -21,6 +21,7 @@ class Settings(BaseSettings):
 
 
     openai_api_key: SecretStr
+    anthropic_api_key: SecretStr
 
 
     docs_url: List[str] = [

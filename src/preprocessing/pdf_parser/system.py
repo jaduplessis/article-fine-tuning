@@ -11,16 +11,16 @@ When applicable, introduce hashtags to the titles and subtitles in the chunks
 Constraint: Return the remaining text in format like this:
 
 output:
-```
+<<<
 <parsed_text>
-```
+>>>
 
 Here are some examples:
 
 # Example 1
 
 User:
-```
+<<<
 08/12/2023, 12:49
 Building a Massively Scalable Serverless Chat Application with AWS AppSync | by Sarah Hamilton | Serverless Transformation | Medium
 https://medium.com/serverless-transformation/building-a-massively-scalable-serverless-chat-application-with-aws-appsync-dbe1733dcb95
@@ -40,11 +40,11 @@ in just 4 weeks, when demand for our client’s video conferencing service went
 through the roof at the beginning of the first Covid-19 lockdown.
 Open in app
 Search
-```
+>>>
 
 Assistant:
 
-```
+<<<
 # Building a Massively Scalable Serverless Chat Application with AWS AppSync
 Sarah Hamilton · Follow
 Published in Serverless Transformation
@@ -52,13 +52,13 @@ Published in Serverless Transformation
 
 ## Introduction
 When demand strikes, developers are tasked with building features quickly. My team knew this all too well when we were set to build a highly scalable chat app in just 4 weeks, when demand for our client’s video conferencing service went through the roof at the beginning of the first Covid-19 lockdown.
-```
+>>>
 
 
 # Example 2
 
 User:
-```
+<<<
 08/12/2023, 12:46
 Enabling the Optimal Serverless Platform Team — CDK and Team Topologies | by Ben Ellerby | Serverless Transformation | Medium
 https://medium.com/serverless-transformation/enabling-the-optimal-serverless-platform-team-cdk-and-team-topologies-fe4d9299adc9
@@ -78,10 +78,10 @@ together.
 Inside team topologies there are 4 types of team:
 1. Stream-Aligned Team: Ideally split into segments of the Business Domain (e.g.
 Bounded Contexts) and delivering a flow of work.
-```
+>>>
 
 Assistant:
-```
+<<<
 Cognitive Load: The amount of working memory being used.
 Team Topologies, Matthew Skelton & Manuel Pais
 
@@ -91,13 +91,13 @@ Team Topologies, the book and framework from Matthew Skelton & Manuel Pais, prop
 
 Inside team topologies there are 4 types of team:
 1. Stream-Aligned Team: Ideally split into segments of the Business Domain (e.g. Bounded Contexts) and delivering a flow of work.
-```
+>>>
 
 
 # Example 3
 
 User:
-```
+<<<
 08/12/2023, 12:49
 Building a Massively Scalable Serverless Chat Application with AWS AppSync | by Sarah Hamilton | Serverless Transformation | Medium
 https://medium.com/serverless-transformation/building-a-massively-scalable-serverless-chat-application-with-aws-appsync-dbe1733dcb95
@@ -111,10 +111,10 @@ $4.00 per million Query and Data Modification Operations ($3.50 per million in
 API Gateway)
 $2.00 per million Real-time Updates
 Tips and Tricks
-```
+>>>
 
 Assistant:
-```
+<<<
 ## Cost
 AppSync’s stated costs are slightly more expensive than Query and Data Modification Operations in API Gateway. However, AppSync generally works out to
 be less expensive, as you’ll be making fewer requests when using GraphQL (no more underfetching)!
@@ -122,13 +122,13 @@ $4.00 per million Query and Data Modification Operations ($3.50 per million in A
 $2.00 per million Real-time Updates
 
 Tips and Tricks
-```
+>>>
 
 
 Example 4
 
 User:
-```
+<<<
 08/12/2023, 12:46
 Enabling the Optimal Serverless Platform Team — CDK and Team Topologies | by Ben Ellerby | Serverless Transformation | Medium
 https://medium.com/serverless-transformation/enabling-the-optimal-serverless-platform-team-cdk-and-team-topologies-fe4d9299adc9
@@ -146,18 +146,18 @@ EventBridge Storming, a variant of Event Storming, to…
 10 min read · Apr 7, 2020
 615
 5
-```
+>>>
 
 Assistant:
-```
+<<<
 
-```
+>>>
 
 
 Example 5
 
 User:
-```
+<<<
 08/12/2023, 12:46
 Enabling the Optimal Serverless Platform Team — CDK and Team Topologies | by Ben Ellerby | Serverless Transformation | Medium
 https://medium.com/serverless-transformation/enabling-the-optimal-serverless-platform-team-cdk-and-team-topologies-fe4d9299adc9
@@ -178,10 +178,10 @@ as a top-down bottleneck that slows development and innovation. At the same time
 security incidents have been rising for years, and a strong cyber security posture
 requires organisations to work together, not just throwing things over the wall to
 InfoSec.
-```
+>>>
 
 Assistant:
-```
+<<<
 Serverless, and related technologies, have enabled teams to move faster, reduce total cost of ownership and overall empowered developers to have greater
 ownership of the systems they build. However, Serverless is not a silver bullet — there is an organisational side that’s key to unlock the full benefits of Cloud.
 When it comes to team structure as we adopt more Cloud-Native technologies, like Serverless, there are 2 key areas that need to be rethought:
@@ -192,6 +192,6 @@ As discussed above, the solution is not purely technical — but CDK can enable 
 ## Rethinking Security
 In many large organisations that move to adopt Serverless, security is typically seen as a top-down bottleneck that slows development and innovation. At the same time
 security incidents have been rising for years, and a strong cyber security posture requires organisations to work together, not just throwing things over the wall to InfoSec.
-```
+>>>
 """
 

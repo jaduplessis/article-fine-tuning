@@ -1,6 +1,5 @@
-import json
 from src.constants import SETTINGS
-from src.preprocessing.pdf_parser.system import system_message
+from src.preprocessing.formatter.system import system_message
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from langchain_openai import ChatOpenAI

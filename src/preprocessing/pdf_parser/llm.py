@@ -50,7 +50,7 @@ class PdfParserLLM():
 
     response = self.model.invoke(messages).content
 
-    parsed_text = response.replace('```', '')
+    parsed_text = response.replace('<<<', '').replace('>>>', '')
    
     return parsed_text
    

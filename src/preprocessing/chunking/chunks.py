@@ -11,6 +11,10 @@ class Chunking:
     self.max_chunk = max_chunk
     self.max_overlap = max_overlap
     self.min_overlap = min_overlap
+    self.headers = []
+    # self.introductions = ''
+    # self.conclusions = ''
+    self.chunks = []
 
 
   def split_sections(self, doc):
@@ -21,14 +25,22 @@ class Chunking:
     """
     lines = doc.split('\n')
     sections = []
+    headers = []
 
     section = ''
     for line in lines:
       if line.startswith('#'):
         sections.append(section)
+        headers.append(line)
         section = line
+
       else:
         section += '\n' + line
+
+    if len(headers) > 1:
+      self.headers = headers[1:-1]
+    # self.introductions = sections[0]
+    # self.conclusions = sections[-1]
 
     return sections
   
@@ -91,5 +103,36 @@ class Chunking:
         overlap = self.calculate_overlap(chunk_sections)
         chunk_sections = [overlap]
 
+    self.chunks = chunks
     return chunks
+  
+
+  def save_data(self):
+    """
+    Function that takes a dictionary containing headers, introduction and conclusion.
+    The function appends the headers, introduction and conclusion to files
+    in the articles/components/ folder.
+
+
+    """
+    root_folder = 'articles/components/'
+    with open(root_folder + 'headers.txt', 'a') as file:
+      for header in self.headers:
+        file.write(header + '\n')
+
+    # with open(root_folder + 'introductions.txt', 'a') as file:
+    #   file.write(self.introductions + '\n')
+    #   file.write('\n\n\n')
+
+    # with open(root_folder + 'conclusions.txt', 'a') as file:
+    #   file.write(self.conclusions + '\n')
+    #   file.write('\n\n\n')
+
+    with open('articles/chunks/chunks.txt', 'a') as file:
+      
+      for chunk in self.chunks:
+        file.write('\n<Chunk>')
+        file.write('\n' + chunk)
+
+
       
