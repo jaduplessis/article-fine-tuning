@@ -3,6 +3,7 @@ import random
 from src.constants import SETTINGS
 from src.preprocessing.neutralising.system import base_message_a, base_message_b, style_variation
 from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_anthropic import ChatAnthropic
 
 from langchain_openai import ChatOpenAI
 
@@ -12,12 +13,14 @@ class NeutraliserLLM:
   
   '''
   def __init__(self, file_path: str):
-    self.model = self.start_model()
+    self.openai = self.start_openai_model()
+    self.anthropic = self.start_anthropic_model()
     self.corpus = self.load_corpus(file_path)
     self.neutralise_chunks = []
+    self.styles = []
 
 
-  def start_model(self):
+  def start_openai_model(self):
     ''' Function to start the language model
   
     Returns:
@@ -27,6 +30,23 @@ class NeutraliserLLM:
       api_key=SETTINGS.openai_api_key.get_secret_value(),
       model="gpt-4",
       temperature=1.15,
+      
+      max_tokens=1500,
+    )
+
+    return model
+  
+
+  def start_anthropic_model(self):
+    ''' Function to start the language model
+  
+    Returns:
+      anthropic: The language model
+    '''
+    model = ChatAnthropic(
+      anthropic_api_key=SETTINGS.anthropic_api_key.get_secret_value(),
+      model="claude-3-sonnet-20240229",
+      temperature=0.7,
       max_tokens=1500,
     )
 
@@ -44,6 +64,7 @@ class NeutraliserLLM:
     '''
     index = random.randint(0, len(style_variation) - 1)
     style = style_variation[index]
+    self.styles.append(style)
 
     system_message = base_message_a + style + base_message_b
     
@@ -55,8 +76,16 @@ class NeutraliserLLM:
         content=chunk
       )
     ]
-
-    neutralised_chunk = self.model.invoke(messages).content
+    
+    # Randomly select the model to use
+    if random.choice([True, False]):
+      neutralised_chunk = self.openai.invoke(messages).content
+    else:
+      # Anthropic has rate limits so if it fails, use OpenAI
+      try:
+        neutralised_chunk = self.anthropic.invoke(messages).content
+      except:
+        neutralised_chunk = self.openai.invoke(messages).content
    
     return neutralised_chunk
   

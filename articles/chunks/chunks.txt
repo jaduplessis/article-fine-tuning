@@ -1,117 +1,92 @@
 
 <Chunk>
 
-# Building a Massively Scalable Serverless Chat Application with AWS AppSync
-## Introduction
-When demand strikes, developers are tasked with building features quickly. My team knew this all too well when we were set to build a highly scalable chat app in just 4 weeks, when demand for our client’s video conferencing service went through the roof at the beginning of the first Covid-19 lockdown. Google Trends: Searches for ‘Video Conferencing’ in the UK. There was a significant increase in demand in March 2020.
+# How to secure CI/CD roles without burning production to the ground
 
-When building the chat application discussed above we had to take into account the following requirements:
-- Release to production quickly — their systems were failing to cope with the increased traffic levels
-- Scale to 250,000 chat participants per video event
-- Build the capability in their existing development team to maintain and further iterate the chat system
+By now, most of us have moved away from using IAM users for CI/CD pipelines. Instead, we’d use dedicated CI/CD roles, one for each pipeline. This forces us to consider who can assume this role. Identity federation is widely supported by 3rd-party providers such as GitHub Actions [1]. So, no more putting IAM credentials in CI/CD tools and worry that they might be compromised in a security breach [2].
 
-The chat application needed to have functionality where users could talk to each other in real-time. We used websockets rather than long-polling due to their cost efficiency and performance at scale (read more about the pros and cons of long-polling vs websockets).
+However, attackers can still compromise the pipeline through supply chain attacks. For example, by compromising a Docker image we depend on in our CI/CD pipeline. Or by compromising static analysis tools such as eslint [3]. So, the question of “ How best to limit CI/CD role’s permissions?” has come up many times during my Production-Ready Serverless [4] workshop. Your instinct might be to lock down the CI/CD role to just what it needs. Because we all want to follow the principle of least privilege. There are different ways to achieve this. Here are two common approaches:
 
-The answer to all of the above was to use AWS AppSync, a fully-managed Serverless GraphQL interface to a number of different data sources — it offers speed of delivery, scale and ease of use. API Gateway websockets were also considered, but due to our requirements for mass broadcast of messages, it was not a viable option (there is no way to broadcast messages to all connected clients with one API call — you need an API call per connection). In addition, the GraphQL interface of AppSync allows for rapid frontend development.
+1. Start with a blank slate and add permissions to the role until it’s able to deploy your application.
+2. Start with the AdministratorAccess policy and allow the role to do everything. Use CloudTrail to track the actions performed by the role over some time. Then use the CloudTrail data to create a tailored set of IAM permissions.
+
+The first approach is very time-consuming and laborious and is best avoided. But in truth, both approaches have significant drawbacks in the long run.
 
 <Chunk>
- We used websockets rather than long-polling due to their cost efficiency and performance at scale (read more about the pros and cons of long-polling vs websockets).
+ Your instinct might be to lock down the CI/CD role to just what it needs. Because we all want to follow the principle of least privilege. There are different ways to achieve this. Here are two common approaches:
 
-The answer to all of the above was to use AWS AppSync, a fully-managed Serverless GraphQL interface to a number of different data sources — it offers speed of delivery, scale and ease of use. API Gateway websockets were also considered, but due to our requirements for mass broadcast of messages, it was not a viable option (there is no way to broadcast messages to all connected clients with one API call — you need an API call per connection). In addition, the GraphQL interface of AppSync allows for rapid frontend development.
-## Architecture
-This simple architecture enabled us to have a high speed of delivery for our chat application while also have a clear set of technologies that would need to be taught to the existing team.
+1. Start with a blank slate and add permissions to the role until it’s able to deploy your application.
+2. Start with the AdministratorAccess policy and allow the role to do everything. Use CloudTrail to track the actions performed by the role over some time. Then use the CloudTrail data to create a tailored set of IAM permissions.
 
-The architecture is based around AppSync, which integrates with Cognito user pools for our authentication. DynamoDB is also leveraged as our data source (read about DynamoDB in the next section).
+The first approach is very time-consuming and laborious and is best avoided. But in truth, both approaches have significant drawbacks in the long run.
+## Rollback surprises
 
-All of this hooks up to our React frontend which uses the Apollo Client to fire our requests to the GraphQL server from the frontend. Note, the Serverless Framework was used to manage the IaC (infrastructure as code), while amplify simply provided the SDK for frontend interaction with backend deployed services.
-
-<Chunk>
-## Architecture
-This simple architecture enabled us to have a high speed of delivery for our chat application while also have a clear set of technologies that would need to be taught to the existing team.
-
-The architecture is based around AppSync, which integrates with Cognito user pools for our authentication. DynamoDB is also leveraged as our data source (read about DynamoDB in the next section).
-
-All of this hooks up to our React frontend which uses the Apollo Client to fire our requests to the GraphQL server from the frontend. Note, the Serverless Framework was used to manage the IaC (infrastructure as code), while amplify simply provided the SDK for frontend interaction with backend deployed services.
-## DynamoDB
-Being a NoSQL Serverless Database, DynamoDB provides a fully scalable solution to our needs without the need to manage servers. It was built for enormous, high velocity use cases and big companies such as AirBnb and Samsung use the service, so we’re in good company! In addition DynamoDB streams came in use later on for further analytics integrations.
-
-The fact that AppSync integrates with DynamoDB is ideal as it means we need to do minimal set-up and therefore increase our speed of delivery. 
-
-```
-DynamoDB Schema for basic Serverless chat application
-```
+For most people, CloudFormation rollbacks don’t happen often. Especially for those of us who don’t write CloudFormation templates by hand. So when a deployment fails for the first time, you find out that the CI/CD role is missing a whole bunch of permissions! This can leave you in an awkward position where your stack is stuck in the ROLLBACK_FAILED state. And you are stuck until you resolve the missing permissions. In essence, crafting a least privileged CI/CD role takes twice as much work as you think. Because you also need to factor in all the permissions for rollbacks.
 
 <Chunk>
-## DynamoDB
-Being a NoSQL Serverless Database, DynamoDB provides a fully scalable solution to our needs without the need to manage servers. It was built for enormous, high velocity use cases and big companies such as AirBnb and Samsung use the service, so we’re in good company! In addition DynamoDB streams came in use later on for further analytics integrations.
+## Rollback surprises
 
-The fact that AppSync integrates with DynamoDB is ideal as it means we need to do minimal set-up and therefore increase our speed of delivery. 
+For most people, CloudFormation rollbacks don’t happen often. Especially for those of us who don’t write CloudFormation templates by hand. So when a deployment fails for the first time, you find out that the CI/CD role is missing a whole bunch of permissions! This can leave you in an awkward position where your stack is stuck in the ROLLBACK_FAILED state. And you are stuck until you resolve the missing permissions. In essence, crafting a least privileged CI/CD role takes twice as much work as you think. Because you also need to factor in all the permissions for rollbacks.
+## A tax on productivity
 
-```
-DynamoDB Schema for basic Serverless chat application
-```
-## GraphQL Explained
-With REST we need to call separate endpoints to get the information you require. With GraphQL we need only call the same GraphQL endpoint.
-
-In a nutshell, GraphQL is an alternative way to connect your client applications to your backend. It was developed at Facebook, to improve bandwidth efficiency since mobile devices don’t always have a good internet connection. Most of us are more familiar with REST, so let’s compare it to GraphQL to get a better understanding.
-
-When using GraphQL we simply call one endpoint rather than having separate defined endpoints as in REST.
-## Queries
-Queries in GraphQL are analogous to GET requests in REST. Queries are a way of fetching data (in our case we are fetching from DynamoDB as our database so we’ll use this as our example going forward).
-
-```
-See how we define a query above to get messages. We pass in a roomId as an argument which we can use in our query to only get messages for that specific chat room. We then specify that the return type is an array of messages, where ‘Message’ is a type.
-```
+Your architecture is not static. It needs to evolve with your application and your business needs. Every time you introduce a new service, you also need to revise the CI/CD role. Want to start using OpenSearch? Not before you update the CI/CD role! Want to start using Bedrock? Not before you … you get the point. In organizations where the application team doesn’t own the CI/CD role, this productivity tax can be steep. It requires many back-and-forth between teams and hits productivity hard. And you likely have to do these for every service because every service has its own CI/CD pipeline. This friction is a constant tax on your productivity. It hampers innovation and delays the adoption of new services into the tech stack. Because introducing a new service means new CI/CD permissions. Who in their right mind wants to deal with all that bureaucracy?
 
 <Chunk>
- We then specify that the return type is an array of messages, where ‘Message’ is a type.
-```
-## GraphQL Explained
-With REST we need to call separate endpoints to get the information you require. With GraphQL we need only call the same GraphQL endpoint.
+ Want to start using OpenSearch? Not before you update the CI/CD role! Want to start using Bedrock? Not before you … you get the point. In organizations where the application team doesn’t own the CI/CD role, this productivity tax can be steep. It requires many back-and-forth between teams and hits productivity hard. And you likely have to do these for every service because every service has its own CI/CD pipeline. This friction is a constant tax on your productivity. It hampers innovation and delays the adoption of new services into the tech stack. Because introducing a new service means new CI/CD permissions. Who in their right mind wants to deal with all that bureaucracy?
+## They are not as safe as you think
 
-In a nutshell, GraphQL is an alternative way to connect your client applications to your backend. It was developed at Facebook, to improve bandwidth efficiency since mobile devices don’t always have a good internet connection. Most of us are more familiar with REST, so let’s compare it to GraphQL to get a better understanding.
-
-When using GraphQL we simply call one endpoint rather than having separate defined endpoints as in REST.
-## Mutations
-Mutations in GraphQL are similar to POST requests in REST. Mutations do what they say, they are way of mutating the data. 
-
-```
-See above how we set up a sendMessage mutation — we pass in the roomId and message as arguments so that we can add it with that information as an item to our DynamoDB table. The return type is a Message.
-```
-## Subscriptions
-AppSync subscriptions, which allow for real-time updates, are where the fun begins. For our chat application, we want to ‘subscribe’ to the mutation event ‘sendMessage’ so that the frontend application updates when a message is sent with the new message to all users. 
-
-```
-You can see here that we pass in the roomId which means that only users in that particular chat room will be listening for messages sent.
-```
+The reason why we pursue least privileged CI/CD roles is to reduce the blast radius of a security breach. If an attacker compromises our CI/CD pipeline, we want to limit what the attacker can do. However, the CI/CD role likely needs to deploy IAM roles and Lambda functions. In the event of a compromise, a least privileged CI/CD role is not enough to stop the attacker. Because the attackers can use the CI/CD role to create confused deputies to act on their behalf. For example, attackers can use the CI/CD role to create IAM roles for them to assume. And they can also create Lambda functions to carry out malicious activities. We can mitigate these risks to some extent with permission boundaries. But that requires lots more work and it’s hard to get right. And again, you have to do it for every CI/CD role.
 
 <Chunk>
- For our chat application, we want to ‘subscribe’ to the mutation event ‘sendMessage’ so that the frontend application updates when a message is sent with the new message to all users. 
+ If an attacker compromises our CI/CD pipeline, we want to limit what the attacker can do. However, the CI/CD role likely needs to deploy IAM roles and Lambda functions. In the event of a compromise, a least privileged CI/CD role is not enough to stop the attacker. Because the attackers can use the CI/CD role to create confused deputies to act on their behalf. For example, attackers can use the CI/CD role to create IAM roles for them to assume. And they can also create Lambda functions to carry out malicious activities. We can mitigate these risks to some extent with permission boundaries. But that requires lots more work and it’s hard to get right. And again, you have to do it for every CI/CD role.
+## Prefer a permissive role that is hard to abuse
 
-```
-You can see here that we pass in the roomId which means that only users in that particular chat room will be listening for messages sent.
-```
-## Mutations
-Mutations in GraphQL are similar to POST requests in REST. Mutations do what they say, they are way of mutating the data. 
+It’s counterproductive to blindly pursue least privileged CI/CD roles. Beyond a certain point, you get diminished return-on-investments. That is, you have to work much harder to address security risks that are unlikely to happen. With that in mind, here’s my preferred approach to securing a CI/CD pipeline.
 
-```
-See above how we set up a sendMessage mutation — we pass in the roomId and message as arguments so that we can add it with that information as an item to our DynamoDB table. The return type is a Message.
-```
-## Resolvers
-We use Apache VTL for our business logic. In order to communicate with our data source we need to use resolvers — this is the connection between GraphQL and our data source. The resolvers are written in Apache Velocity Template Language (VTL) which takes the request as an input and outputs a JSON document.
-## Pipeline Resolvers
-Sometimes we may need to perform multiple operations to resolve the GraphQL field — in this case we use a great feature of AppSync called pipeline resolvers. Pipeline resolvers consist of a ‘before’ mapping template, followed by a number of functions, finishing with an ‘after’ mapping template.
+Use a separate AWS account for each environment
 
-```
-As an example we use a pipeline resolver for starting a thread on a question. To make use of single table design we have ‘MESSAGE’ rows and ‘THREAD’ rows. When a person replies in a thread, we need to add a THREAD row and mutate the MESSAGE row to add a ‘repliedAt’ timestamp. This requires 2 separate requests. 
-```
+This is something everyone should do. It insulates environments from each other. If one environment is compromised, it’s contained by the account boundary. If an attacker compromises your dev environment, they won’t be able to access your production data.
+For large organizations, you should go a step further. I recommend having at least one account per team per environment. That way, teams are insulated from other teams’ mistakes.
+For business critical systems, they should have their own set of accounts too. That is one account per service per environment. It’s not always necessary. But it’s a good idea to protect these business critical systems from other systems.
 
 <Chunk>
-## Pipeline Resolvers
-Sometimes we may need to perform multiple operations to resolve the GraphQL field — in this case we use a great feature of AppSync called pipeline resolvers. Pipeline resolvers consist of a ‘before’ mapping template, followed by a number of functions, finishing with an ‘after’ mapping template.
+ It insulates environments from each other. If one environment is compromised, it’s contained by the account boundary. If an attacker compromises your dev environment, they won’t be able to access your production data.
+For large organizations, you should go a step further. I recommend having at least one account per team per environment. That way, teams are insulated from other teams’ mistakes.
+For business critical systems, they should have their own set of accounts too. That is one account per service per environment. It’s not always necessary. But it’s a good idea to protect these business critical systems from other systems.
+## Service Control Policies (SCPs)
 
-```
-As an example we use a pipeline resolver for starting a thread on a question. To make use of single table design we have ‘MESSAGE’ rows and ‘THREAD’ rows. When a person replies in a thread, we need to add a THREAD row and mutate the MESSAGE row to add a ‘repliedAt’ timestamp. This requires 2 separate requests. 
-```
-## Frontend — Amplify & Apollo Client
-To authenticate our users we use the AWS Amplify SDK with Cognito. Amplify provides pre-built UI components to cater for sign-in and sign-out. We configure the authentication by using ‘Auth’ from aws-amplify and using our user pool information (from the Cognito user pool deployed by the Serverless Framework). To make the requests from the frontend we use the Apollo Client- it is our favourite tool for interacting with our backend as it is compatible with TypeScript, providing a great developer experience, and it manages state in the frontend using a caching mechanism.
+Use SCPs to deny access to unused resources. These broad strokes include access to unused AWS regions and unused services. This way, you can eliminate large parts of AWS as possible attack surfaces.
+For example, if you’re not running any EC2 instances, then deny all EC2 activities. That’s one less target for crypto-jacking attacks. But hey, ECS is the new EC2 for crypto-jacking. If you can’t disable ECS as a whole, then at least deny access to the regions where you don’t have any containers.
+## Attribute-Based Access Control (ABAC)
+
+Support for ABAC is improving all the time, although it’s still lacklustre in its current form. But many services already support the `aws:ResourceTag/${TagKey}` and `aws:PrincipalTag/${TagKey}` conditions. These conditions can be used to stop attackers from accessing and creating resources. They can be added to the IAM permissions of the CI/CD role. Or they can be enforced through a permission boundary.
+To make them more effective, the CI/CD role should be denied the ability to find out about itself. That way, the attacker can’t find out what tags the CI/CD role has and what tags they need to use to create new resources.
+Doing so helps us stop the attacker from accessing our resources through the CI/CD role. But they might target the following services to execute malicious code or escalate their privilege:
+- Lambda
+- EC2
+- ECS
+- IAM
+- CodePipeline
+- CloudFormation
+Luckily, all these services (and many others) support the `aws:ResourceTag/${TagKey}` condition. We can use this condition to stop the attacker from creating new resources.
+
+<Chunk>
+ Or they can be enforced through a permission boundary.
+To make them more effective, the CI/CD role should be denied the ability to find out about itself. That way, the attacker can’t find out what tags the CI/CD role has and what tags they need to use to create new resources.
+Doing so helps us stop the attacker from accessing our resources through the CI/CD role. But they might target the following services to execute malicious code or escalate their privilege:
+- Lambda
+- EC2
+- ECS
+- IAM
+- CodePipeline
+- CloudFormation
+Luckily, all these services (and many others) support the `aws:ResourceTag/${TagKey}` condition. We can use this condition to stop the attacker from creating new resources.
+## A permissive CI/CD role
+
+After doing the above:
+- We have removed the attack surface associated with unused regions and services.
+- We have limited the blast radius of a compromise to individual teams and services.
+- We have made it difficult for attackers to abuse the CI/CD role by requiring correct tags on resources. Which the attacker is not able to figure out easily because the CI/CD role is not allowed to describe itself.
+Now we can allow ourselves to have a permissive CI/CD role that is not a pain in the ass to create and maintain! Because the role will be difficult to abuse, and there is a ceiling to what it can actually do.
+By “permissive”, I don’t necessarily mean “AdministratorAccess”. But you can give broad read & write permissions to all the services you use. Instead of picking out just the actions you need with a fine comb!
+

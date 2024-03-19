@@ -1,0 +1,21 @@
+
+# Testing GenAI Applications: Addressing the Challenges of Non-deterministic Language Models
+Fabien Zucchet, aleios
+
+The recent emergence of Large Language Models (LLMs) has given rise to a new breed of applications powered by Generative AI (GenAI). These applications leverage third-party LLM services to process inputs in a more creative way than traditional applications. With GenAI applications, developers can easily harness the power of AI to generate content, write code, or solve problems in innovative ways. However, despite their different characteristics, GenAI applications should still be subject to best practice software development principles. Developers still value version control, code review, and rigorous testing for these applications. In this article, we will explore the challenges involved in testing GenAI applications, given the underlying nature of LLMs, and highlight our approach to address these complexities.
+
+## The Emergence of Prompt-Centric Applications and the Need for Testing
+Unlike traditional applications, where the core value lies in the code, the main value of GenAI applications comes from interacting with third-party LLMs to process user inputs. This paradigm shift has several implications, the most prominent being the non-deterministic nature of LLMs. Running the same model twice with the same prompt can return slightly different responses. Developers have no way to predict precisely how a model will respond to a given prompt (instructions given to an LLM). In addition, the response from the model is returned as loosely structured or unstructured plain text. Efficient prompt engineering relies on a quick feedback loop to evaluate the quality of LLM responses. Additionally, updating prompts in GenAI applications can introduce unintended consequences and may lead to regressions in the application's behavior. Having a robust testing mechanism is key to bridge the gap between proof of concepts and production applications.
+
+## Defining Test Cases and Generating Test Prompts
+Before testing an application, the first step is to identify what aspects require the most quality assurance. The answer to this question depends on the specific application, and there is no one-size-fits-all approach. In the case of Code Review GPT, our primary concern was the consistency of the tool's reviews. To measure this consistency, we focused on a list of common coding flaws that the tool should identify. Each item on this list became a test case, and we aimed to ensure that the tool consistently identified and commented on these patterns in the future. We ran these cases through the application by generating example code snippets based on plain text descriptions of the test cases.
+
+## Evaluating the Quality of AI Responses
+The last step involves evaluating the quality of the review produced by the LLM. Using snapshots as reference points for evaluation, we can gauge the quality of the reviews accurately. By comparing the test results to these snapshots, we can determine the success of the test based on the semantic similarity of the responses. This approach reduces the complexity of evaluating the quality of AI responses down to comparing two plain text documents, making it easier to assess the consistency and performance of the GenAI application.
+
+## Generalizing the Test Pipeline
+The automated threshold testing pipeline, including generating the test prompts, feeding them to the model, and computing a similarity score with the embedded snapshots, is a generic concept that can be applied to many GenAI applications.
+
+
+## Conclusion
+As GenAI applications continue to evolve and appear in production, having confidence in their behavior becomes increasingly crucial. Threshold testing as described in this article serves as a simple yet effective approach to tackle this challenge. As these applications grow in complexity, more advanced testing practices will undoubtedly be required. Adopting proper testing methodologies for GenAI applications can aid in conducting model benchmarks and updates. With LLMs acting as black boxes, prompt testing empowers developers to switch models and ensure consistent behavior with model updates. Embracing a robust testing approach will be fundamental to the successful development and deployment of GenAI applications in the future.

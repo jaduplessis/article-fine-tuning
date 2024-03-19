@@ -1047,3 +1047,143 @@
 ## Pipeline Resolvers
 ## Frontend — Amplify & Apollo Client
 ## Cost
+## Rollback surprises
+## A tax on productivity
+## They are not as safe as you think
+## Prefer a permissive role that is hard to abuse
+## Service Control Policies (SCPs)
+## Attribute-Based Access Control (ABAC)
+## A permissive CI/CD role
+## Lambda pros
+## Lambda cons
+## Step Functions pros
+## Step Functions cons
+## AWS Kinesis and Lambda are a great combo for processing large amounts of data in real-time. However, there’s a common oversight that many developers make when integrating these two services.
+## Hydrating event data
+## Function URL pros
+## Function URL cons
+### Where Function URL makes sense
+## API Gateway pros
+## API Gateway cons
+## When API Gateway makes sense
+## Serverless Advantage
+## Data Security
+## Features
+### Easy Model Selection
+### Agents
+## Fine-Tuning
+## Bedrock over OpenAI?
+## The naive approach
+### Simple webhook endpoint architecture
+# serverless.yml
+# ...
+## The missing characteristics of a good webhook design
+## A production-ready approach
+### Production-ready serverless webhook endpoint architecture
+# serverless.yml
+# ...
+# You can use native Serverless framework functionalities to define your processors
+# But you need raw Cloudformation to define API Gateway integration to EventBridge
+## Introduction
+## Architecture
+## DynamoDB
+## GraphQL Explained
+## Queries
+## Mutations
+## Subscriptions
+## Resolvers
+## Pipeline Resolvers
+## Frontend — Amplify & Apollo Client
+## Cost
+## Generating snapshot images from a PDF
+## In jest
+## Setting up the browser for jest
+## Rethinking Security
+### Security as “Top Down” Blocker
+## Cognitive Load
+### Cognitive Load: The amount of working memory being used
+## CDK — The Enabling Technology
+### What is CDK?
+#### The Construct Hierarchy
+### Baked-In Best Practices — L2+
+## Not a Compliance Panacea
+## Example Application
+## What are Pipes?
+## How are EventBridge Pipes different from EventBridge Buses?
+## Why use Pipes?
+## Building the Architecture
+### DynamoDB Streams
+## Infrastructure as Code (IaC)
+### DynamoDB
+### Lambdas
+## Introduction
+## Foundational Model Training / Selection
+## Fine Tuning
+## Hosting
+## Application
+## Context Embeddings
+## The AWS Cloud Development Kit (CDK) 
+## What is Infrastructure as Code?
+## Why CDK?
+## CDK deploy process
+## Installation
+## The basics
+## Creating a Lambda
+## Adding to the Stack
+## Deployment
+## Testing
+## What is LocalStack
+### How can it help us as a developer?
+## AWS services offered by LocalStack
+### Installation
+### Example 1 - Creating S3 bucket
+### Example 2 - Host a static website
+## Can’t you just use a VPC endpoint?
+## No resource policy
+## Service Control Policies (SCPs)
+## The naive approach
+# Example configuration here
+### Problems with the naive approach
+## A production-ready approach
+# serverless.yml
+## The states which make up a Step Function
+## Should we test Step Functions?
+## Unit vs Integration Testing
+## Introducing Step Functions assertions with sls-test-tools
+### Assert that the state machine has the correct execution status
+### Now let’s check we get the right output given a valid input
+### Putting it all together
+## What is an ACL?
+## ACL as a Service:
+## Building Blocks of an ACL:
+## How the problem arises
+## Hexagonal Architecture To The Rescue
+## Where Should Cross-Cutting Infrastructure Dependencies Live?
+## Auto-Scaffolding Dev and Test “Adapters”
+## The Emergence of Prompt-Centric Applications and the Need for Testing
+## Defining Test Cases and Generating Test Prompts
+## Evaluating the Quality of AI Responses
+## Generalizing the Test Pipeline
+## What is Image Object Detection?
+## Our Use Case
+## Image Analysis using Deep Learning
+## What is Amazon Rekognition?
+## Architecture
+## Final Thoughts
+## Current observability solutions in Serverless
+## Fair Warning
+## Creating a Metric
+### Default Metrics
+### Creating the Data Point:
+### Creating the Metric:
+### Creating a Dashboard & Widget
+## Creating an Alarm
+## On the Edge
+## What is Serverless?
+## Real World Edge Computing
+## Worlds Collide — The Serverless Edge… CentreLess?
+### Lambda@Edge — Serverless services are already at the Edge
+# Serverless.yml file definition for a single Lambda@Edge function — the complete IaC template needed.
+### Firecracker — solving many challenges for Serverless that Edge computing will face
+## TL;DR
+### Automated Typescript definitions generation pipeline

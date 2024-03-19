@@ -33,6 +33,8 @@ def create_neutralised_dataset(file_path: str, output_file_path: str) -> None:
     # Iterate through the neutralised chunks and original corpus to create the dataset.
     # User Prompt = base_prompt + neutralised_chunk
     # Assistant Response = original_chunk
+
+    notes = []
     dataset = []
     for i, chunk in enumerate(neutraliser.neutralise_chunks):
         dataset.append({
@@ -52,8 +54,19 @@ def create_neutralised_dataset(file_path: str, output_file_path: str) -> None:
             ]
         })
 
+        notes.append({
+            "neutralised_chunk": chunk,
+            "style": neutraliser.styles[i],
+        })
+
+
     with open(output_file_path, 'w') as f:
-        f.write(json.dumps(dataset, indent=2))
+        # Save file as JSONL file
+        for data in dataset:
+            f.write(json.dumps(data) + '\n')
+    
+    with open('notes.json', 'w') as f:
+        f.write(json.dumps(notes, indent=2))
 
 
     
