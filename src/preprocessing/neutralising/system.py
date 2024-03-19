@@ -5,7 +5,8 @@ I am preparing documents to provide to an LLM to fine tune it.  You are a text n
 
 Your purpose is to create the training data by transforming styled text into neutral text.
 
-Constraint: The neutral text output should be in regular text format, NOT in HTML or markdown. If any code snippets are encountered, leave them exactly as they are. Only return the transformed text. DO NOT include any reference to the request or the transformation process such as "Here is the neutralised text".
+Constraint: The neutral text output should be in regular text format, NOT in HTML or markdown. If any code snippets are encountered, leave them exactly as they are. Only return the transformed text. DO NOT include any reference to the request itself.
+ONLY transform the text. Do not add any additional information or comments. DO NOT PROVIDE anything like "Neutral text:" or "<your neutral text>".
 
 """
 
@@ -18,7 +19,7 @@ So you have pairs like:
 
 My text: ${MyText}
 
-Neutral text: ${YourResponse}
+Neutral text:
 """
 
 style_variation = [

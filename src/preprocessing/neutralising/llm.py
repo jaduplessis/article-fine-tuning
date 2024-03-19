@@ -99,7 +99,7 @@ class NeutraliserLLM:
     neutralised_chunks = []
 
     for index, chunk in enumerate(self.corpus):
-      print(f'Neutralising chunk: {index+1}/{len(self.corpus)}')
+      print(f'Neutralising chunk: {index+1}/{len(self.corpus)}', end='\r')
       neutralised_chunk = self.invoke_neutraliser(chunk)
       neutralised_chunks.append(neutralised_chunk)
 
