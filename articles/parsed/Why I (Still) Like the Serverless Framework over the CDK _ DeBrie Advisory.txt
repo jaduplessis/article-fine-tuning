@@ -1,0 +1,105 @@
+
+# Why I (Still) Like the Serverless Framework over the CDK
+
+Over the past year or two, I've seen the AWS CDK turn a lot of my friends into converts. And in the very recent past, a few of these people have written up their (mostly positive) experiences with the CDK. Some of these articles describe similar concerns I have, but none of them quite nails my thoughts on the matter. I thought I'd throw my hat in the ring and describe why I still prefer the Serverless Framework over the CDK.
+
+## My Background and Preferences
+
+Let's start with some facts that factor into my preferences. Your situation might not overlap with mine and, thus, some of my points may not be applicable to you. I worked for Serverless, Inc., creators of the Serverless Framework, for about two and a half years. This is relevant! I learned a ton about AWS + serverless while working there, and I built a lot of knowledge around the Serverless Framework in particular. Second, I am primarily building "little-s" serverless applications on AWS. Finally, I have a pretty strong bias for boring in my programming.
+
+## Why I like the Serverless Framework
+
+At a high level, there are four reasons I prefer the Serverless Framework:
+
+1. It provides a standard structure for every application
+2. It abstracts the right things
+3. It doesn't abstract the wrong things
+4. It constrains our bad impulses
+
+### A standard structure for every application
+
+Both tools are basically pre-processors for AWS CloudFormation. Their core difference is in the process they use to get to CloudFormation. With the Serverless Framework, you're writing a single, declarative YAML configuration file called serverless.yml that will describe your application. It has a number of top-level blocks, including functions for creating Lambda functions and resources for provisioning other AWS resources. The key abstraction is really in the functions block, as it focuses on simplifying the process around creating Lambda functions and hooking up event sources to these functions. This is the core of most serverless applications, and simplifying this process is a big win.
+
+If you're from the Rails ecosystem, you might think of the Serverless Framework's approach as 'convention over configuration'.
+
+In contrast, every CDK repo I've looked at turns into a murder mystery. I'm digging through application code that is mixed with infrastructure code, trying to find my function handlers, my service code, anything that will help me solve The Case of the Missing IAM Permission. Some people have discussed the long-term issues around CDK maintainability -- what if people aren't updating your constructs or staying on top of CDK version updates? Those issues are real, but I'm way more worried about how you maintain developer knowledge around a specific CDK application. There are real hurdles to onboarding a new developer into your custom structure. They don't just need to know the CDK, they need to know your team's specific implementation of the CDK. The knowledge of your application that is built up within your team is hidden, and it will result in slower ramp-up times for new developers.
+
+### The Serverless Framework abstracts the right things
+
+I mentioned in the last section that both the Serverless Framework and the CDK are abstractions over CloudFormation. In my opinion, the Serverless Framework does a better job of abstracting the right things to make it easier to work with serverless applications. There are two hard things about deploying serverless applications:
+
+- Packaging up your functions
+- Configuring the events that will trigger your functions
+
+The Serverless Framework has rightly identified that functions and events are core to serverless applications and has made them the core abstraction. Let's look at another example functions block in a serverless.yml file:
+
+```
+functions:
+  createUser:
+    handler: src/handlers/createUser.handler
+    events:
+      - http: POST /users
+  processQueue:
+    handler: src/handlers/processQueue.handler
+    events:
+      - sqs:
+          arn: !GetAtt [MyQueue, Arn]
+          batchSize: 10
+  fanout:
+    handler: src/handlers/fanout.handler
+    events:
+      - sns:
+          arn: !Ref MyTopic
+          topicName: MyTopic
+```
+
+When I run `serverless deploy` to deploy my stack, it's going to build and configure a function on AWS for each function in my functions block (here, there are three: createUser, processQueue, and fanout). For each function, it may install your dependencies, run a build process, zip up the directory, upload it to S3, and register the function and its basic configuration with the Lambda service. You don't really need to know much about that packaging process, unless you have specific needs.
+
+### The CDK abstracts the wrong things
+
+On the flip side of the previous section, I also think that the CDK abstracts the wrong things. But first, I have a confession. In the previous section, I made the Serverless Framework event configuration look slightly easier than it is. For both the SQS and SNS integrations, we're referring to additional infrastructure in our application -- an SQS queue and an SNS topic:
+
+```
+functions:
+  createUser:
+    handler: src/handlers/createUser.handler
+    events:
+      - http: POST /users
+  processQueue:
+    handler: src/handlers/processQueue.handler
+    events:
+      - sqs:
+          arn: !GetAtt [MyQueue, Arn]
+          batchSize: 10
+  fanout:
+    handler: src/handlers/fanout.handler
+    events:
+      - sns:
+          arn: !Ref MyTopic
+          topicName: MyTopic
+```
+
+While the Serverless Framework looks at functions and events as the core of your serverless applications, it also realizes you will need additional supporting infrastructure to do anything meaningful. That's where the resources block of your serverless.yml comes in.
+
+In the resources block, you can configure any additional AWS resource you want via straight CloudFormation. For our SQS- and SNS-enabled application above, our resources block would look as follows:
+
+```
+resources:
+  MyQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: my-queue
+
+  MyTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: my-topic
+```
+
+The part I love about this is that you're actually writing CloudFormation. You're learning the tool that you'll be using under the hood.
+
+### Conclusion
+
+In this post, I described why I still prefer the Serverless Framework for building serverless applications on AWS. I prefer the way it constrains our impulses, its convention over configuration, and the way it incrementally teaches the cloud to users. I also did a quick run through of things the CDK does well.
+
+I realize opinions will differ on this, and that's OK! I'm here to describe the tradeoffs as I see them and in light of my situation and preferences. If yours differ, then your conclusion might as well. Hit me up and let me know why I'm wrong :)

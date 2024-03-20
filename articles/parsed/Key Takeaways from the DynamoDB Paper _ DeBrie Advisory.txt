@@ -1,0 +1,58 @@
+
+# Key Takeaways from the DynamoDB Paper
+
+In 2007, a group of engineers from Amazon published The Dynamo Paper, which described an internal database used by Amazon to handle the enormous scale of its retail operation. This paper helped launch the NoSQL movement and led to the creation of NoSQL databases like Apache Cassandra, MongoDB, and, of course, AWS's own fully managed service, DynamoDB.
+
+Fifteen years later, the folks at Amazon have released a new paper about DynamoDB. Most of the names have changed (except for AWS VP Swami Sivasubramanian, who appears on both!), but it's a fascinating look at how the core concepts from Dynamo were updated and altered to provide a fully managed, highly scalable, multi-tenant cloud database service.
+
+In this post, I want to discuss my key takeaways from the new DynamoDB Paper. There are two main areas I found interesting from my review:
+- The product-level, "user needs" learnings of the DynamoDB service; and
+- The technical improvements over the years to further develop the service.
+
+## Product-level takeaways from the DynamoDB Paper
+
+Both the Dynamo paper and the DynamoDB paper describe some incredible technical concepts, but I'm equally impressed by the discussion of user needs. In both papers, there is a deep review of existing practices to see what is important and what should be re-thought around core user needs.
+
+The Dynamo paper also noted that the traditional guarantee of strong consistency, while critical in some circumstances, was not necessary for all applications. In many cases, the enhanced availability and reduced write latency achieved by relaxing consistency requirements was well worth the tradeoff.
+
+There are three important notes on user needs that I took from the paper:
+1. The importance of consistent performance
+2. Fully managed is better than self-managed
+3. User data isn't as evenly distributed as you want
+
+### The importance of consistent performance
+
+One point that the DynamoDB paper hammers over and over is that, for many users, "consistent performance at any scale is often more important than median request service times." Stated differently, it's better to have a narrower range between median and tail latency than it is to reduce median (or even p90 or p95) latency.
+
+### Fully managed over self-managed
+
+If you're reading this blog, you're probably drinking the cloud Kool-Aid and may even be fully into the serverless world. In the serverless world, we're as focused as possible building the key differentiators of our business while offloading the undifferentiated heavy lifting to others.
+
+### User data isn't as evenly distributed as you want
+
+The final user takeaway is that you have to work with the users you're given, not the users you want. In an ideal world, users would have steady, predictable traffic that spread data access evenly across a table's keyspace. The reality is much different. The original Dynamo paper used the concept of consistent hashing to distribute your data across independent partitions of roughly 10GB in size. (Partitions are discussed in more depth below). It uses the partition key of your items to place data across the partitions, which allows for predictable performance and linear horizontal scaling. Further, unlike the original Dynamo system, DynamoDB is a multi-tenant system. Your partitions are co-located with partitions from tables of other DynamoDB users. 
+
+## Technical takeaways from the DynamoDB Paper
+
+The product-level learnings are fascinating, but this is ultimately a technical paper. The work the DynamoDB team is doing at massive scale is impressive, and many of the technical learnings apply even to those without DynamoDB's scale. 
+
+### Using log replicas to improve durability and availability
+
+One of the more interesting points was how DynamoDB uses something called log replicas to assist during periods of instance failure. 
+
+```plaintext
+Start of DynamoDB storage background section
+```
+Under the hood, DynamoDB is splitting your data into partitions, which are independent storage segments of roughly 10GB in size. DynamoDB uses the partition key to assign your items to a given partition, which allows DynamoDB to scale horizontally as your database grows while still keeping related items together. DynamoDB is running a massive fleet of storage nodes which are handling partitions from many different user tables. An individual partition is actually a set of three partition instances in different availability zones which form a replication group. One of the instances is the leader for a given partition and is responsible for handling all writes. When a write comes in, the leader writes it locally and ensures it is commited to at least one additional replica before returning to the client. This increases durability in the event of failure, as the loss of one node will not result in loss of data. On each storage partition are two data structures -- the B-tree that contains the indexed data on the partition along with a write-ahead log (WAL) that contains an ordered list of updates applied to that partition. A write-ahead log is a commonly used tactic in databases to enhance the durability and latency of write operations. Updating the B-tree is slower as it involves random I/O and may include re-writing multiple pages on disk, whereas updating the write-ahead log is an append-only operation that is much faster (P.S. the write-ahead log is basically the concept behind Kafka and related systems!). 
+
+```plaintext
+End of DynamoDB storage background section
+```
+
+### Decoupling partitions from throughput
+
+In the previous section, we discussed how partitions are used to segment data within a table and allow for horizontal scaling. Additionally, we saw how DynamoDB co-locates partitions from different customers on the same storage nodes to allow for greater efficiency of the DynamoDB service. A second interesting technical takeaway is the slow, steady improvements to the "admission control" system for these partitions. 
+
+### The use of asynchronous caches
+
+The last technical takeaway was in DynamoDB's use of asynchronous caches. By "asynchronous cache", I'm meaning a system that caches data locally but then rehydrates the cache behind the scenes, asynchronously, to ensure it stays up to date. 

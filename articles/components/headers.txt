@@ -1187,3 +1187,36 @@
 ### Firecracker — solving many challenges for Serverless that Edge computing will face
 ## TL;DR
 ### Automated Typescript definitions generation pipeline
+## KEY POINT
+## What is an event-driven architecture
+### Event-driven architectures communicate asynchronously
+### Event-driven architectures communicate via events
+## What is event-based compute
+## Implications of event-based compute
+## Product-level takeaways from the DynamoDB Paper
+### The importance of consistent performance
+### Fully managed over self-managed
+### User data isn't as evenly distributed as you want
+## Technical takeaways from the DynamoDB Paper
+### Using log replicas to improve durability and availability
+### Decoupling partitions from throughput
+## My Background and Preferences
+## Why I like the Serverless Framework
+### A standard structure for every application
+### The Serverless Framework abstracts the right things
+### The CDK abstracts the wrong things
+## How DynamoDB pricing works
+## Using DynamoDB Transactions doubles your WCU usage
+## Choosing between provisioned and on-demand
+## Doin' the math pt. 1: Tracking view counts
+## Doin' the math pt. 2: Do I really need that secondary index?
+## How you should think about DynamoDB costs | DeBrie Advisory
+## Doin' the math pt. 3: Complex filtering
+## What are the benefits of GraphQL?
+### API type safety
+### Fewer network requests from the frontend
+### Flexible querying patterns
+## Key takeaways
+## DynamoDB and GraphQL
+### Background on DynamoDB
+## The case for (and against) single-table design with GraphQL
