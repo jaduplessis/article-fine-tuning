@@ -49,3 +49,6 @@ def recursive_extract_text(input_dir, overwrite=False):
                 pdf_path = os.path.join(root, file)
                 print(f'Processing {pdf_path}', end='\n')
                 extract_text(pdf_path, output_path)
+
+
+

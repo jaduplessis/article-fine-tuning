@@ -20,6 +20,7 @@ beautifulsoup4 = "^4.12.3"
 langchain-openai = "^0.0.8"
 markdown = "^3.5.2"
 pymupdf = "^1.23.26"
+langchain-community = "^0.0.28"
 
 
 
