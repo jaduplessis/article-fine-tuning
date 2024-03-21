@@ -36,7 +36,10 @@ def get_sections(soup):
           section = [bare_element]
 
       else:
-          section.append(element)
+          bare_element = f"<p>{element.text}</p>"
+          section.append(bare_element)
+
+  sections.append(section)
 
   print(f"Extracted {len(sections)} sections from the webpage.")
   return sections

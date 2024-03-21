@@ -69,4 +69,7 @@ def create_neutralised_dataset(file_path: str, output_file_path: str) -> None:
         f.write(json.dumps(notes, indent=2))
 
 
+    return dataset
+
+
     

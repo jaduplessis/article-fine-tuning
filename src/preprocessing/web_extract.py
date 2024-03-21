@@ -10,4 +10,5 @@ def extract_sections(urls):
 
         with open(f'articles/parsed/file_{index}.txt', 'w') as file:
             for section in sections:
+                section = '#element#'.join(section)
                 file.write(str(section) + '\n')

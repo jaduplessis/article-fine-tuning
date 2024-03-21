@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     supabase_service_key: SecretStr
 
     fine_tuning_prompt: str = "Can you format this text for the ALEIOS style and tone?"
-    fine_tuning_content: str = "Gob is a stylistic chatbot that is excellent at rephrasing text."
+    fine_tuning_content: str = "Will is a stylistic chatbot that is excellent at rephrasing text."
 
     parsed_output: str = 'articles/parsed/'
 

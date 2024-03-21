@@ -1,23 +1,28 @@
 import json
 import random
-from src.constants import SETTINGS
-from src.preprocessing.neutralising.system import base_message_a, base_message_b, style_variation
-from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_anthropic import ChatAnthropic
 
+from langchain_anthropic import ChatAnthropic
+from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
+
+from src.constants import SETTINGS
+from src.preprocessing.neutralising.system import base_message, style_variation
 
 
 class NeutraliserLLM:
   ''' Class to neutralise the chunks using the language model
   
   '''
-  def __init__(self, file_path: str):
+  def __init__(self, input_file_path: str, output_dir: str, style: str, overwrite: bool = True):
+    ''' Constructor for the NeutraliserLLM class
+    '''
     self.openai = self.start_openai_model()
     self.anthropic = self.start_anthropic_model()
-    self.corpus = self.load_corpus(file_path)
+    self.corpus = self.load_corpus(input_file_path)
+    self.output_dir = output_dir
     self.neutralise_chunks = []
-    self.styles = []
+    self.style = style
+    self.overwrite = overwrite
 
 
   def start_openai_model(self):
@@ -29,7 +34,7 @@ class NeutraliserLLM:
     model = ChatOpenAI(
       api_key=SETTINGS.openai_api_key.get_secret_value(),
       model="gpt-4",
-      temperature=1.15,
+      temperature=1,
       
       max_tokens=1500,
     )
@@ -46,7 +51,7 @@ class NeutraliserLLM:
     model = ChatAnthropic(
       anthropic_api_key=SETTINGS.anthropic_api_key.get_secret_value(),
       model="claude-3-sonnet-20240229",
-      temperature=0.7,
+      temperature=0.8,
       max_tokens=1500,
     )
 
@@ -61,12 +66,10 @@ class NeutraliserLLM:
 
     Returns:
       neutralised_chunk: The neutralised chunk
-    '''
-    index = random.randint(0, len(style_variation) - 1)
-    style = style_variation[index]
-    self.styles.append(style)
+    '''    
+    style = style_variation[self.style]
 
-    system_message = base_message_a + style + base_message_b
+    system_message = base_message + style
     
     messages = [
       SystemMessage(
@@ -84,10 +87,17 @@ class NeutraliserLLM:
       # Anthropic has rate limits so if it fails, use OpenAI
       try:
         neutralised_chunk = self.anthropic.invoke(messages).content
+        print('Anthropic succeeded')
       except:
+        print('Anthropic failed. Using OpenAI')
         neutralised_chunk = self.openai.invoke(messages).content
+
+    data = {
+      'chunk': chunk,
+      'neutralised_chunk': neutralised_chunk,
+    }
    
-    return neutralised_chunk
+    return data
   
 
   def neutralise_corpus(self) -> list:
@@ -97,14 +107,59 @@ class NeutraliserLLM:
       neutralised_chunks: The neutralised chunks
     '''
     neutralised_chunks = []
+    if self.overwrite:
+      self.overwrite_previous_data()
 
-    for index, chunk in enumerate(self.corpus):
+    for index, styled_chunk in enumerate(self.corpus):
       print(f'Neutralising chunk: {index+1}/{len(self.corpus)}', end='\r')
-      neutralised_chunk = self.invoke_neutraliser(chunk)
+      neutralise_data = self.invoke_neutraliser(styled_chunk)
+      neutralised_chunk = neutralise_data['neutralised_chunk']
+
       neutralised_chunks.append(neutralised_chunk)
+
+      training_response = self.format_data(styled_chunk=styled_chunk, neutralised_chunk=neutralised_chunk)
+
+      with open(f"{self.output_dir}/neutralised_data_{self.style}.jsonl", 'a') as file:
+        file.write(json.dumps(training_response) + '\n')
+
+      with open(f"{self.output_dir}/logging_{self.style}.json", 'a') as file:
+        file.write(json.dumps(neutralise_data, indent=2) + '\n')
 
     self.neutralise_chunks = neutralised_chunks
     return neutralised_chunks
+  
+
+  def format_data(self, styled_chunk: str, neutralised_chunk: str) -> dict:
+    ''' Function to format the data
+
+    Args:
+      neutralised_chunk: The neutralised chunk
+      metadata: The metadata
+
+    Returns:
+      data: The formatted data
+    '''
+    content = SETTINGS.fine_tuning_content
+    base_prompt = SETTINGS.fine_tuning_prompt
+
+    data = {
+        "messages": [
+            {
+                "role": "system",
+                "content": content
+            },
+            {
+                "role": "user",
+                "content": base_prompt + '\n\n```' + neutralised_chunk + '\n```'
+            },
+            {
+                "role": "assistant",
+                "content": styled_chunk
+            }
+        ]
+    }
+
+    return data
   
 
   def load_corpus(self, file_path: str) -> list:
@@ -121,8 +176,19 @@ class NeutraliserLLM:
     
     # Iterate through the corpus and split it into chunks.
     # Chunks are delimited by <Chunk> tags.
-    chunks = doc.split('<Chunk>')[1:]
+    # chunks = doc.split('<Chunk>')[1:]
+    chunks = doc.split('\n')
     corpus = [chunk.strip() for chunk in chunks]
 
     return corpus
+   
+
+  def overwrite_previous_data(self):
+    ''' Function to overwrite the previous data
+    '''
+    with open(f"{self.output_dir}/neutralised_data_{self.style}.jsonl", 'w') as file:
+      file.write('')
+    
+    with open(f"{self.output_dir}/logging_{self.style}.json", 'w') as file:
+      file.write('')
    
